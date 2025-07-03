@@ -11,8 +11,17 @@ class UploadedPDF(models.Model):
     extracted_text = models.TextField(blank=True, null=True)
 
     def save_extracted_text(self, text):
-        self.extracted_text = text
-        self.save()
+        try:
+            print(f"Saving extracted text for PDF {self.id}")
+            self.extracted_text = text
+            self.save()
+            print(f"Successfully saved extracted text for PDF {self.id}")
+        except Exception as e:
+            print(f"Error saving extracted text for PDF {self.id}: {e}")
+            import traceback
+            traceback.print_exc()
+            # Re-raise the exception to be handled by the caller
+            raise
 
 class TokenUsage(models.Model):
     prompt_tokens = models.IntegerField(default=0)

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generating Your Quiz</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+    <style>
+        .progress-container {
+            margin: 2rem 0;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .progress-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .step-indicator {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.5rem;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .step-indicator.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .step-indicator.completed {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .step-text {
+            flex: 1;
+        }
+        .step-status {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .error-message {
+            color: #f44336;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #ffebee;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PDF Quiz Generator</h1>
+            <p>Your quiz is being generated. Please wait...</p>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--primary-color);">Generating Your Quiz</h2>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div id="progress-text">0% complete</div>
+            </div>
+            
+            <div class="progress-steps">
+                <div class="progress-step">
+                    <div class="step-indicator" id="step-1">1</div>
+                    <div class="step-text">Retrieving PDF file</div>
+                    <div class="step-status" id="status-1">Waiting...</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-indicator" id="step-2">2</div>
+                    <div class="step-text">Extracting text from PDF</div>
+                    <div class="step-status" id="status-2">Waiting...</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-indicator" id="step-3">3</div>
+                    <div class="step-text">Processing text and generating embeddings</div>
+                    <div class="step-status" id="status-3">Waiting...</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-indicator" id="step-4">4</div>
+                    <div class="step-text">Generating quiz questions</div>
+                    <div class="step-status" id="status-4">Waiting...</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-indicator" id="step-5">5</div>
+                    <div class="step-text">Finalizing quiz</div>
+                    <div class="step-status" id="status-5">Waiting...</div>
+                </div>
+            </div>
+            
+            <div class="error-message" id="error-message">
+                An error occurred while generating your quiz. Please try again.
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <a href="{% url 'quiz' %}" class="back-link">Cancel and start over</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const taskId = '{{ task_id }}';
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            const errorMessage = document.getElementById('error-message');
+            
+            // Function to update the progress indicators
+            function updateStepIndicator(step, status) {
+                // Reset all steps
+                for (let i = 1; i <= 5; i++) {
+                    const stepEl = document.getElementById(`step-${i}`);
+                    const statusEl = document.getElementById(`status-${i}`);
+                    
+                    if (i < step) {
+                        // Completed steps
+                        stepEl.className = 'step-indicator completed';
+                        statusEl.textContent = 'Completed';
+                    } else if (i === step) {
+                        // Current step
+                        stepEl.className = 'step-indicator active';
+                        statusEl.textContent = status || 'In progress...';
+                    } else {
+                        // Future steps
+                        stepEl.className = 'step-indicator';
+                        statusEl.textContent = 'Waiting...';
+                    }
+                }
+            }
+            
+            // Function to check task status
+            function checkTaskStatus() {
+                fetch(`/task-status/${taskId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update progress bar
+                        const percent = data.percent || 0;
+                        progressFill.style.width = `${percent}%`;
+                        progressText.textContent = `${percent}% complete`;
+                        
+                        // Update step indicators
+                        if (data.step) {
+                            updateStepIndicator(data.step, data.message);
+                        }
+                        
+                        // Handle task completion or failure
+                        if (data.status === 'SUCCESS') {
+                            // All steps completed
+                            updateStepIndicator(5, 'Completed');
+                            
+                            // Redirect to the quiz page
+                            if (data.redirect_url) {
+                                setTimeout(() => {
+                                    window.location.href = data.redirect_url;
+                                }, 1000); // Short delay to show completion
+                            }
+                        } else if (data.status === 'FAILURE') {
+                            // Show error message
+                            errorMessage.textContent = data.message || 'An error occurred while generating your quiz.';
+                            errorMessage.style.display = 'block';
+                        } else {
+                            // Task still in progress, check again in 1 second
+                            setTimeout(checkTaskStatus, 1000);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking task status:', error);
+                        errorMessage.textContent = 'Error communicating with the server. Please try again.';
+                        errorMessage.style.display = 'block';
+                    });
+            }
+            
+            // Start checking task status
+            checkTaskStatus();
+        });
+    </script>
+</body>
+</html>

@@ -7,6 +7,69 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     {% load static %}
     <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+    <style>
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .file-input {
+            margin-bottom: 1rem;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            width: 100%;
+        }
+        .file-input:hover, .file-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        .file-name {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            display: none;
+        }
+        .tips-container {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        .tips-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        .tips-list {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+        .tips-list li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -16,23 +79,72 @@
         </div>
 
         <div class="card">
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" id="quiz-form">
                 {% csrf_token %}
 
                 {% for field in form %}
                 <div class="form-group">
                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                     {{ field.errors }}
-                    {{ field }}
+
+                    {% if field.name == 'pdf_file' %}
+                        {{ field }}
+                        <div class="file-name" id="file-name"></div>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+
                     {% if field.help_text %}
                     <small class="form-text text-muted">{{ field.help_text }}</small>
                     {% endif %}
                 </div>
                 {% endfor %}
 
-                <button type="submit" class="btn btn-primary btn-block">Generate Quiz</button>
+                <button type="submit" class="btn btn-primary btn-block" id="submit-btn">Generate Quiz</button>
             </form>
+
+            <div class="tips-container">
+                <div class="tips-title">Tips for faster quiz generation:</div>
+                <ul class="tips-list">
+                    <li>Use PDFs with clear, well-formatted text for better extraction</li>
+                    <li>Smaller PDFs (under 20 pages) process more quickly</li>
+                    <li>For large documents, consider uploading specific chapters or sections</li>
+                    <li>Choose fewer questions for faster generation</li>
+                </ul>
+            </div>
         </div>
     </div>
+
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Uploading PDF and preparing quiz generation...</p>
+        <p>You'll be redirected to the progress page shortly.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('quiz-form');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const fileInput = document.querySelector('input[type="file"]');
+            const fileName = document.getElementById('file-name');
+
+            // Show file name when selected
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    fileName.textContent = 'Selected file: ' + this.files[0].name;
+                    fileName.style.display = 'block';
+                } else {
+                    fileName.style.display = 'none';
+                }
+            });
+
+            // Show loading overlay when form is submitted
+            form.addEventListener('submit', function() {
+                if (form.checkValidity()) {
+                    loadingOverlay.style.display = 'flex';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

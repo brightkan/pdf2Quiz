@@ -1,12 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.http import JsonResponse
+from django.core.cache import cache
+import json
 
 # Create your views here.
 
 # core/views.py
 from .forms import QuizForm
-from .models import Quiz, Question
+from .models import Quiz, Question, UploadedPDF
 from .quiz_generator import generate_quiz_from_pdf
+from .tasks import process_pdf_async
 
 def quiz_view(request):
     if request.method == 'POST':
@@ -15,17 +19,45 @@ def quiz_view(request):
             pdf = form.cleaned_data['pdf_file']
             num_questions = form.cleaned_data['num_questions']
             difficulty = form.cleaned_data['difficulty']
-            result = generate_quiz_from_pdf(pdf, num_questions, difficulty)
 
-            # Extract quiz object and token usage from the result
-            quiz = result['quiz']
-            token_usage = result['token_usage']
+            # Save the PDF file first
+            pdf_obj = UploadedPDF.objects.create(file=pdf)
 
-            # Redirect to the interactive quiz page
-            return redirect('interactive_quiz', quiz_id=quiz.id)
+            # Start the asynchronous task
+            task = process_pdf_async.delay(pdf_obj.id, num_questions, difficulty)
+
+            # Redirect to the progress page
+            return redirect('quiz_progress', task_id=task.id)
     else:
         form = QuizForm()
     return render(request, 'form.html', {'form': form})
+
+def quiz_progress(request, task_id):
+    """
+    Display a progress page for the quiz generation task.
+    """
+    return render(request, 'progress.html', {'task_id': task_id})
+
+def check_task_status(request, task_id):
+    """
+    Check the status of a Celery task and return it as JSON.
+    """
+    # Get the task progress from Redis
+    progress = cache.get(f"task_progress_{task_id}")
+
+    if not progress:
+        # Task not found or not started
+        return JsonResponse({
+            'status': 'PENDING',
+            'message': 'Task is pending or not found',
+            'percent': 0
+        })
+
+    # If the task is complete and has a quiz_id, include it in the response
+    if progress.get('status') == 'SUCCESS' and 'quiz_id' in progress:
+        progress['redirect_url'] = reverse('interactive_quiz', kwargs={'quiz_id': progress['quiz_id']})
+
+    return JsonResponse(progress)
 
 def interactive_quiz(request, quiz_id):
     quiz = get_object_or_404(Quiz, id=quiz_id)

@@ -3,7 +3,7 @@ from django import forms
 
 class QuizForm(forms.Form):
     pdf_file = forms.FileField(
-        widget=forms.FileInput(attrs={'class': 'form-control'})
+        widget=forms.FileInput(attrs={'class': 'form-control file-input'})
     )
     num_questions = forms.IntegerField(
         min_value=1, 
