@@ -1,0 +1,7 @@
+media
+.env
+db.sqlite3
+.junie
+.idea
+*.pyc
+*.bin

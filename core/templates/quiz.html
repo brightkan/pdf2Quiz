@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Quiz</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+    <style>
+        .question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .option:hover {
+            background-color: #f0f0f0;
+        }
+        .option input {
+            margin-right: 0.5rem;
+            margin-top: 0.25rem;
+        }
+        .option-text {
+            flex: 1;
+        }
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        .topic {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PDF Quiz Generator</h1>
+            <p>Answer all questions and submit to see your results.</p>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--primary-color);">Your Interactive Quiz</h2>
+
+            <form method="post" action="{% url 'submit_quiz' quiz.id %}">
+                {% csrf_token %}
+
+                {% for question in questions %}
+                <div class="question">
+                    <div class="question-text">{{ forloop.counter }}. {{ question.text }}</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="question_{{ question.id }}" value="a" required>
+                            <span class="option-text">a) {{ question.option_a }}</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="question_{{ question.id }}" value="b" required>
+                            <span class="option-text">b) {{ question.option_b }}</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="question_{{ question.id }}" value="c" required>
+                            <span class="option-text">c) {{ question.option_c }}</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="question_{{ question.id }}" value="d" required>
+                            <span class="option-text">d) {{ question.option_d }}</span>
+                        </label>
+                    </div>
+                    {% if question.topic %}
+                    <div class="topic">Topic: {{ question.topic }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="submit-btn">Submit Quiz</button>
+            </form>
+
+            <div style="margin-top: 2rem;">
+                <a href="{% url 'quiz' %}" class="back-link">Generate another quiz</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

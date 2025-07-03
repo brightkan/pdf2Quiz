@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Results</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {% load static %}
+    {% load custom_filters %}
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+    <style>
+        .results-summary {
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        .score {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        .feedback-section {
+            margin-bottom: 2rem;
+        }
+        .feedback-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        .question {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        .option-text {
+            flex: 1;
+        }
+        .correct {
+            background-color: rgba(40, 167, 69, 0.1);
+            border-left: 4px solid #28a745;
+        }
+        .incorrect {
+            background-color: rgba(220, 53, 69, 0.1);
+            border-left: 4px solid #dc3545;
+        }
+        .weak-topics {
+            background-color: #fff3cd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .topic-tag {
+            display: inline-block;
+            background-color: #ffeeba;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .action-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+        }
+        .primary-button {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .secondary-button {
+            background-color: #f8f9fa;
+            color: #212529;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Quiz Results</h1>
+            <p>See how well you did and get personalized feedback.</p>
+        </div>
+
+        <div class="card">
+            <div class="results-summary">
+                <div class="score">{{ score.percentage|floatformat:0 }}%</div>
+                <p>You got {{ score.correct }} out of {{ score.total }} questions correct.</p>
+            </div>
+
+            <div class="feedback-section">
+                <h3>Feedback</h3>
+                <p>{{ feedback.message }}</p>
+
+                <h4>Strengths:</h4>
+                <p>{{ feedback.strengths }}</p>
+
+                <h4>Areas to Improve:</h4>
+                <p>{{ feedback.areas_to_improve }}</p>
+            </div>
+
+            {% if weak_topics %}
+            <div class="weak-topics">
+                <h3>Topics to Review</h3>
+                <p>Based on your answers, we recommend focusing on these topics:</p>
+                <div>
+                    {% for topic in weak_topics %}
+                    <span class="topic-tag">{{ topic }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <h3>Question Review</h3>
+            {% for question in quiz.questions.all %}
+            <div class="question">
+                <div class="question-text">{{ forloop.counter }}. {{ question.text }}</div>
+                <div class="options">
+                    <div class="option {% if question.correct_option == 'a' %}correct{% elif user_answers|get_item:question.id == 'a' %}incorrect{% endif %}">
+                        <div class="option-text">a) {{ question.option_a }}</div>
+                        {% if question.correct_option == 'a' %}<div>✓</div>{% endif %}
+                    </div>
+                    <div class="option {% if question.correct_option == 'b' %}correct{% elif user_answers|get_item:question.id == 'b' %}incorrect{% endif %}">
+                        <div class="option-text">b) {{ question.option_b }}</div>
+                        {% if question.correct_option == 'b' %}<div>✓</div>{% endif %}
+                    </div>
+                    <div class="option {% if question.correct_option == 'c' %}correct{% elif user_answers|get_item:question.id == 'c' %}incorrect{% endif %}">
+                        <div class="option-text">c) {{ question.option_c }}</div>
+                        {% if question.correct_option == 'c' %}<div>✓</div>{% endif %}
+                    </div>
+                    <div class="option {% if question.correct_option == 'd' %}correct{% elif user_answers|get_item:question.id == 'd' %}incorrect{% endif %}">
+                        <div class="option-text">d) {{ question.option_d }}</div>
+                        {% if question.correct_option == 'd' %}<div>✓</div>{% endif %}
+                    </div>
+                </div>
+                {% if question.topic %}
+                <div class="topic">Topic: {{ question.topic }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="action-buttons">
+                <a href="{% url 'interactive_quiz' quiz.id %}" class="action-button secondary-button">Retake Quiz</a>
+                <a href="{% url 'quiz' %}" class="action-button primary-button">Generate New Quiz</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
