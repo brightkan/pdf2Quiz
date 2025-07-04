@@ -1132,3 +1132,31 @@ INFO 2025-07-04 10:10:43,928 views 16 281472902689184 Weak topics identified for
 INFO 2025-07-04 10:10:43,929 views 16 281472902689184 Generating feedback for average performance: 60.0%
 INFO 2025-07-04 10:10:43,931 basehttp 16 281472902689184 "POST /quiz/49/submit/ HTTP/1.1" 200 23074
 INFO 2025-07-04 10:16:14,370 basehttp 16 281472902689184 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 10:37:26,340 basehttp 16 281472902689184 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 10:40:16,808 logging_config 1 281473701867552 
+worker: Warm shutdown (MainProcess)
+INFO 2025-07-04 10:49:15,885 logging_config 1 281472941330464  
+ -------------- celery@311f80ad0e6f v5.3.6 (emerald-rush)
+--- ***** ----- 
+-- ******* ---- Linux-6.10.14-linuxkit-aarch64-with-glibc2.36 2025-07-04 10:49:15
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         project:0xffff83d9e290
+- ** ---------- .> transport:   redis://redis:6379/0
+- ** ---------- .> results:     redis://redis:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . core.tasks.process_pdf_async
+  . project.celery.debug_task
+
+INFO 2025-07-04 10:49:16,874 autoreload 16 281473262006304 Watching for file changes with StatReloader
+INFO 2025-07-04 10:49:17,269 logging_config 16 281473192096160 July 04, 2025 - 10:49:17
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
