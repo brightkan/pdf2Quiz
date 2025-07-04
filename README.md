@@ -1,6 +1,6 @@
 # PDF Quiz Generator
 
-A Django application that generates quizzes from PDF documents using LangChain and OpenAI.
+A Django application that generates quizzes from PDF documents using LangChain and OpenAI, designed to help students ace their real exams by providing targeted practice with customized questions.
 
 ## Features
 

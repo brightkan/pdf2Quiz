@@ -33,42 +33,53 @@ class TokenUsage(models.Model):
         return f"Usage at {self.timestamp}: {self.total_tokens} tokens"
 
 class Quiz(models.Model):
-    pdf = models.ForeignKey(UploadedPDF, on_delete=models.CASCADE, related_name='quizzes')
+    pdf = models.ForeignKey(UploadedPDF, on_delete=models.CASCADE, related_name='quizzes', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     num_questions = models.IntegerField()
     difficulty = models.CharField(max_length=10)
+    exam_style = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"Quiz {self.id} - {self.created_at}"
 
     def calculate_score(self, user_answers):
         correct_count = 0
-        total_questions = self.questions.count()
+        total_multiple_choice = 0
+        long_answer_count = 0
 
-        for question_id, selected_option in user_answers.items():
+        for question_id, answer in user_answers.items():
             try:
                 question = self.questions.get(id=question_id)
-                if question.correct_option == selected_option:
-                    correct_count += 1
+
+                # Handle multiple-choice questions
+                if question.question_type == 'multiple_choice':
+                    total_multiple_choice += 1
+                    if question.correct_option == answer:
+                        correct_count += 1
+                # Count long-answer questions separately
+                elif question.question_type == 'long_answer':
+                    long_answer_count += 1
             except Question.DoesNotExist:
                 continue
 
-        if total_questions > 0:
-            score_percentage = (correct_count / total_questions) * 100
+        if total_multiple_choice > 0:
+            score_percentage = (correct_count / total_multiple_choice) * 100
             return {
                 'correct': correct_count,
-                'total': total_questions,
-                'percentage': score_percentage
+                'total': total_multiple_choice,
+                'percentage': score_percentage,
+                'long_answer_count': long_answer_count
             }
-        return {'correct': 0, 'total': 0, 'percentage': 0}
+        return {'correct': 0, 'total': 0, 'percentage': 0, 'long_answer_count': long_answer_count}
 
     def get_weak_topics(self, user_answers):
         weak_topics = []
 
-        for question_id, selected_option in user_answers.items():
+        for question_id, answer in user_answers.items():
             try:
                 question = self.questions.get(id=question_id)
-                if question.correct_option != selected_option:
+                # Only consider multiple-choice questions for weak topics
+                if question.question_type == 'multiple_choice' and question.correct_option != answer:
                     if question.topic and question.topic not in weak_topics:
                         weak_topics.append(question.topic)
             except Question.DoesNotExist:
@@ -77,14 +88,22 @@ class Quiz(models.Model):
         return weak_topics
 
 class Question(models.Model):
+    QUESTION_TYPES = (
+        ('multiple_choice', 'Multiple Choice'),
+        ('long_answer', 'Long Answer'),
+    )
+
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
     text = models.TextField()
-    option_a = models.TextField()
-    option_b = models.TextField()
-    option_c = models.TextField()
-    option_d = models.TextField()
-    correct_option = models.CharField(max_length=1)
+    question_type = models.CharField(max_length=20, choices=QUESTION_TYPES, default='multiple_choice')
+    option_a = models.TextField(blank=True, null=True)
+    option_b = models.TextField(blank=True, null=True)
+    option_c = models.TextField(blank=True, null=True)
+    option_d = models.TextField(blank=True, null=True)
+    correct_option = models.CharField(max_length=1, blank=True, null=True)
     topic = models.CharField(max_length=100, blank=True, null=True)
+    explanation = models.TextField(blank=True, null=True)
+    marks = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return f"Question {self.id} for Quiz {self.quiz_id}"

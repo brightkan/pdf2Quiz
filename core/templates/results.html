@@ -96,6 +96,22 @@
             color: #212529;
             border: 1px solid #dee2e6;
         }
+        .long-answer-response {
+            margin-top: 1rem;
+        }
+        .long-answer-response h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        .user-response {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+            border-left: 4px solid var(--primary-color);
+            white-space: pre-wrap;
+            font-family: 'Inter', sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -108,7 +124,10 @@
         <div class="card">
             <div class="results-summary">
                 <div class="score">{{ score.percentage|floatformat:0 }}%</div>
-                <p>You got {{ score.correct }} out of {{ score.total }} questions correct.</p>
+                <p>You got {{ score.correct }} out of {{ score.total }} multiple-choice questions correct.</p>
+                {% if score.long_answer_count > 0 %}
+                <p>You also answered {{ score.long_answer_count }} long-answer question{% if score.long_answer_count > 1 %}s{% endif %}.</p>
+                {% endif %}
             </div>
 
             <div class="feedback-section">
@@ -138,33 +157,53 @@
             {% for question in quiz.questions.all %}
             <div class="question">
                 <div class="question-text">{{ forloop.counter }}. {{ question.text }}</div>
+
+                {% if question.question_type == 'long_answer' %}
+                <div class="long-answer-response">
+                    <h4>Your Answer:</h4>
+                    <div class="user-response">{{ user_answers|get_item:question.id }}</div>
+                </div>
+                {% else %}
                 <div class="options">
                     <div class="option {% if question.correct_option == 'a' %}correct{% elif user_answers|get_item:question.id == 'a' %}incorrect{% endif %}">
                         <div class="option-text">a) {{ question.option_a }}</div>
-                        {% if question.correct_option == 'a' %}<div>✓</div>{% endif %}
+                        {% if question.correct_option == 'a' %}<span class="correct-indicator">✓</span>{% endif %}
                     </div>
                     <div class="option {% if question.correct_option == 'b' %}correct{% elif user_answers|get_item:question.id == 'b' %}incorrect{% endif %}">
                         <div class="option-text">b) {{ question.option_b }}</div>
-                        {% if question.correct_option == 'b' %}<div>✓</div>{% endif %}
+                        {% if question.correct_option == 'b' %}<span class="correct-indicator">✓</span>{% endif %}
                     </div>
                     <div class="option {% if question.correct_option == 'c' %}correct{% elif user_answers|get_item:question.id == 'c' %}incorrect{% endif %}">
                         <div class="option-text">c) {{ question.option_c }}</div>
-                        {% if question.correct_option == 'c' %}<div>✓</div>{% endif %}
+                        {% if question.correct_option == 'c' %}<span class="correct-indicator">✓</span>{% endif %}
                     </div>
                     <div class="option {% if question.correct_option == 'd' %}correct{% elif user_answers|get_item:question.id == 'd' %}incorrect{% endif %}">
                         <div class="option-text">d) {{ question.option_d }}</div>
-                        {% if question.correct_option == 'd' %}<div>✓</div>{% endif %}
+                        {% if question.correct_option == 'd' %}<span class="correct-indicator">✓</span>{% endif %}
                     </div>
                 </div>
+                {% endif %}
+
                 {% if question.topic %}
                 <div class="topic">Topic: {{ question.topic }}</div>
+                {% endif %}
+
+                {% if question.explanation %}
+                <div class="explanation">
+                    <h4>Detailed Explanation:</h4>
+                    <p>{{ question.explanation }}</p>
+                </div>
+                {% endif %}
+
+                {% if question.marks %}
+                <div class="marks">Marks: {{ question.marks }}</div>
                 {% endif %}
             </div>
             {% endfor %}
 
             <div class="action-buttons">
-                <a href="{% url 'interactive_quiz' quiz.id %}" class="action-button secondary-button">Retake Quiz</a>
-                <a href="{% url 'quiz' %}" class="action-button primary-button">Generate New Quiz</a>
+                <a href="{% url 'interactive_quiz' quiz.id %}" class="action-button secondary-button btn">Retake Quiz</a>
+                <a href="{% url 'quiz' %}" class="action-button primary-button btn">Generate New Quiz</a>
             </div>
         </div>
     </div>

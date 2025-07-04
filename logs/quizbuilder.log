@@ -1,0 +1,1134 @@
+INFO 2025-07-03 18:25:27,196 logging_config 1 281473196728352  
+ -------------- celery@b73bfa78aacc v5.3.6 (emerald-rush)
+--- ***** ----- 
+-- ******* ---- Linux-6.10.14-linuxkit-aarch64-with-glibc2.36 2025-07-03 18:25:27
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         project:0xffff9317a510
+- ** ---------- .> transport:   redis://redis:6379/0
+- ** ---------- .> results:     redis://redis:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . core.tasks.process_pdf_async
+  . project.celery.debug_task
+
+INFO 2025-07-03 18:25:28,455 autoreload 15 281473686200352 Watching for file changes with StatReloader
+INFO 2025-07-03 18:25:28,887 logging_config 15 281473615720864 July 03, 2025 - 18:25:28
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-03 18:25:46,612 views 15 281473133375904 Processing quiz submission for quiz ID: 4
+INFO 2025-07-03 18:25:46,652 views 15 281473133375904 Quiz 4 score: 85.71428571428571% (6/7)
+INFO 2025-07-03 18:25:46,656 views 15 281473133375904 No weak topics identified for quiz 4
+INFO 2025-07-03 18:25:46,656 views 15 281473133375904 Generating feedback for high performance: 85.71428571428571%
+INFO 2025-07-03 18:25:46,666 basehttp 15 281473133375904 "POST /quiz/4/submit/ HTTP/1.1" 200 14338
+INFO 2025-07-03 18:25:46,689 basehttp 15 281473133375904 "GET /static/core/css/styles.css HTTP/1.1" 304 0
+INFO 2025-07-03 18:25:56,223 views 15 281473122890144 Displaying interactive quiz with ID: 4
+INFO 2025-07-03 18:25:56,248 basehttp 15 281473122890144 "GET /quiz/4/ HTTP/1.1" 200 13408
+INFO 2025-07-03 18:26:08,857 basehttp 15 281473133375904 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-03 18:26:19,813 views 15 281473122890144 Quiz form submitted
+INFO 2025-07-03 18:26:19,815 views 15 281473122890144 Form is valid. num_questions=10, difficulty=hard, exam_style=SAT, include_long_answer=False
+INFO 2025-07-03 18:26:19,816 views 15 281473122890144 Using exam style: SAT
+INFO 2025-07-03 18:26:19,864 views 15 281473122890144 Started exam style processing task with ID: babff448-c3a4-40ff-92b3-ac2d9c1456dc
+INFO 2025-07-03 18:26:19,865 basehttp 15 281473122890144 "POST / HTTP/1.1" 302 0
+INFO 2025-07-03 18:26:19,868 views 15 281473122890144 Displaying progress page for task: babff448-c3a4-40ff-92b3-ac2d9c1456dc
+INFO 2025-07-03 18:26:19,870 basehttp 15 281473122890144 "GET /progress/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 8120
+INFO 2025-07-03 18:26:19,871 tasks 21 281473196728352 Starting process_pdf_async task: task_id=babff448-c3a4-40ff-92b3-ac2d9c1456dc, pdf_id=None, exam_style=SAT, num_questions=10, difficulty=hard
+INFO 2025-07-03 18:26:19,872 tasks 21 281473196728352 Using exam style: SAT
+INFO 2025-07-03 18:26:19,885 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 125
+INFO 2025-07-03 18:26:20,896 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:26:21,906 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:26:22,918 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:26:23,930 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:26:24,944 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:26:25,956 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:26:26,967 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:26:27,980 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:26:28,992 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:26:30,008 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:26:31,020 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:26:32,033 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 107
+ERROR 2025-07-03 18:26:32,315 logging_config 21 281473196728352 Error in quiz generation: name 'TokenObjects' is not defined
+INFO 2025-07-03 18:26:32,317 logging_config 21 281473196728352 Traceback (most recent call last):
+
+INFO 2025-07-03 18:26:32,317 logging_config 21 281473196728352   File "/app/core/tasks.py", line 111, in process_pdf_async
+    result = generate_quiz_from_exam_style(exam_style, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+INFO 2025-07-03 18:26:32,318 logging_config 21 281473196728352   File "/app/core/quiz_generator.py", line 1512, in generate_quiz_from_exam_style
+    token_usage = TokenObjects.objects.create(
+                  ^^^^^^^^^^^^
+
+ERROR 2025-07-03 18:26:32,318 logging_config 21 281473196728352 NameError: name 'TokenObjects' is not defined
+
+ERROR 2025-07-03 18:26:32,315 tasks 21 281473196728352 Error processing PDF: name 'TokenObjects' is not defined
+Traceback (most recent call last):
+  File "/app/core/tasks.py", line 111, in process_pdf_async
+    result = generate_quiz_from_exam_style(exam_style, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/core/quiz_generator.py", line 1512, in generate_quiz_from_exam_style
+    token_usage = TokenObjects.objects.create(
+                  ^^^^^^^^^^^^
+NameError: name 'TokenObjects' is not defined
+INFO 2025-07-03 18:26:33,044 basehttp 15 281473122890144 "GET /task-status/babff448-c3a4-40ff-92b3-ac2d9c1456dc/ HTTP/1.1" 200 77
+INFO 2025-07-03 18:26:51,863 autoreload 16 281472821133344 Watching for file changes with StatReloader
+INFO 2025-07-03 18:26:52,284 logging_config 16 281472751694240 July 03, 2025 - 18:26:52
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-03 18:26:58,679 basehttp 16 281472271446432 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-03 18:27:12,891 views 16 281472260960672 Quiz form submitted
+INFO 2025-07-03 18:27:12,892 views 16 281472260960672 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-03 18:27:12,892 views 16 281472260960672 PDF file provided: Final.Draft_Highway.Code_2022-1.pdf, size: 27081412 bytes
+INFO 2025-07-03 18:27:13,103 views 16 281472260960672 PDF saved with ID: 34
+INFO 2025-07-03 18:27:13,121 views 16 281472260960672 Started PDF processing task with ID: f3cd655d-8cff-427b-89ab-0d9a45f1656f
+INFO 2025-07-03 18:27:13,123 tasks 21 281473196728352 Starting process_pdf_async task: task_id=f3cd655d-8cff-427b-89ab-0d9a45f1656f, pdf_id=34, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-03 18:27:13,123 tasks 21 281473196728352 Step 1: Retrieving PDF object with ID 34
+INFO 2025-07-03 18:27:13,123 basehttp 16 281472260960672 "POST / HTTP/1.1" 302 0
+INFO 2025-07-03 18:27:13,127 views 16 281472260960672 Displaying progress page for task: f3cd655d-8cff-427b-89ab-0d9a45f1656f
+INFO 2025-07-03 18:27:13,128 basehttp 16 281472260960672 "GET /progress/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 8120
+INFO 2025-07-03 18:27:13,141 tasks 21 281473196728352 PDF object retrieved: UploadedPDF object (34)
+INFO 2025-07-03 18:27:13,143 tasks 21 281473196728352 Step 2: Extracting text from PDF
+INFO 2025-07-03 18:27:13,160 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:27:13,589 logging_config 21 281473196728352 Saving extracted text for PDF 34
+INFO 2025-07-03 18:27:13,597 logging_config 21 281473196728352 Successfully saved extracted text for PDF 34
+INFO 2025-07-03 18:27:14,171 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:27:15,184 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:27:16,198 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:27:17,210 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:27:18,223 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:27:19,235 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:27:20,251 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:27:21,263 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:27:22,275 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:27:23,285 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:27:24,294 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 108
+ERROR 2025-07-03 18:27:24,514 logging_config 21 281473196728352 Error in quiz generation: 'NoneType' object is not iterable
+INFO 2025-07-03 18:27:24,515 logging_config 21 281473196728352 Traceback (most recent call last):
+
+INFO 2025-07-03 18:27:24,516 logging_config 21 281473196728352   File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+INFO 2025-07-03 18:27:24,516 logging_config 21 281473196728352   File "/app/core/quiz_generator.py", line 1717, in generate_quiz_from_pdf
+    for q_data in parsed_questions:
+
+ERROR 2025-07-03 18:27:24,516 logging_config 21 281473196728352 TypeError: 'NoneType' object is not iterable
+
+ERROR 2025-07-03 18:27:24,514 tasks 21 281473196728352 Error processing PDF: 'NoneType' object is not iterable
+Traceback (most recent call last):
+  File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/core/quiz_generator.py", line 1717, in generate_quiz_from_pdf
+    for q_data in parsed_questions:
+TypeError: 'NoneType' object is not iterable
+INFO 2025-07-03 18:27:25,307 basehttp 16 281472260960672 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 76
+INFO 2025-07-03 18:28:20,376 logging_config 1 281473196728352 
+worker: Warm shutdown (MainProcess)
+INFO 2025-07-03 18:29:01,583 logging_config 1 281473725599776  
+ -------------- celery@3023c5e73ef5 v5.3.6 (emerald-rush)
+--- ***** ----- 
+-- ******* ---- Linux-6.10.14-linuxkit-aarch64-with-glibc2.36 2025-07-03 18:29:01
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         project:0xffffb29d2150
+- ** ---------- .> transport:   redis://redis:6379/0
+- ** ---------- .> results:     redis://redis:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . core.tasks.process_pdf_async
+  . project.celery.debug_task
+
+INFO 2025-07-03 18:29:02,689 autoreload 16 281473173700640 Watching for file changes with StatReloader
+INFO 2025-07-03 18:29:03,121 logging_config 16 281473104015776 July 03, 2025 - 18:29:03
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-03 18:29:10,951 views 16 281472619573664 Displaying progress page for task: f3cd655d-8cff-427b-89ab-0d9a45f1656f
+INFO 2025-07-03 18:29:10,965 basehttp 16 281472619573664 "GET /progress/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 8120
+INFO 2025-07-03 18:29:10,987 basehttp 16 281472619573664 "GET /task-status/f3cd655d-8cff-427b-89ab-0d9a45f1656f/ HTTP/1.1" 200 76
+INFO 2025-07-03 18:29:11,435 autoreload 16 281473173700640 /app/core/quiz_generator.py changed, reloading.
+INFO 2025-07-03 18:29:12,326 autoreload 27 281472965779488 Watching for file changes with StatReloader
+INFO 2025-07-03 18:29:12,845 logging_config 27 281472896397728 July 03, 2025 - 18:29:12
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-03 18:29:13,569 basehttp 27 281472416149920 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-03 18:29:15,565 basehttp 27 281472405664160 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-03 18:29:26,741 views 27 281472416149920 Quiz form submitted
+INFO 2025-07-03 18:29:26,742 views 27 281472416149920 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-03 18:29:26,742 views 27 281472416149920 PDF file provided: Final.Draft_Highway.Code_2022-1.pdf, size: 27081412 bytes
+INFO 2025-07-03 18:29:26,956 views 27 281472416149920 PDF saved with ID: 35
+INFO 2025-07-03 18:29:26,975 views 27 281472416149920 Started PDF processing task with ID: 426983fe-ff8b-4a20-a636-1f1f9daf5da3
+INFO 2025-07-03 18:29:26,977 basehttp 27 281472416149920 "POST / HTTP/1.1" 302 0
+INFO 2025-07-03 18:29:26,982 views 27 281472416149920 Displaying progress page for task: 426983fe-ff8b-4a20-a636-1f1f9daf5da3
+INFO 2025-07-03 18:29:26,984 basehttp 27 281472416149920 "GET /progress/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 8120
+INFO 2025-07-03 18:29:26,988 tasks 21 281473725599776 Starting process_pdf_async task: task_id=426983fe-ff8b-4a20-a636-1f1f9daf5da3, pdf_id=35, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-03 18:29:26,989 tasks 21 281473725599776 Step 1: Retrieving PDF object with ID 35
+INFO 2025-07-03 18:29:27,009 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 103
+INFO 2025-07-03 18:29:27,024 tasks 21 281473725599776 PDF object retrieved: UploadedPDF object (35)
+INFO 2025-07-03 18:29:27,024 tasks 21 281473725599776 Step 2: Extracting text from PDF
+INFO 2025-07-03 18:29:27,382 logging_config 21 281473725599776 Saving extracted text for PDF 35
+INFO 2025-07-03 18:29:27,390 logging_config 21 281473725599776 Successfully saved extracted text for PDF 35
+INFO 2025-07-03 18:29:28,019 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:29:29,032 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:29:30,048 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:29:31,058 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:29:32,069 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:29:33,085 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:29:34,097 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:29:35,109 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:29:36,118 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:29:37,131 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:29:38,150 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:29:39,163 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:29:40,171 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 108
+ERROR 2025-07-03 18:29:40,636 logging_config 21 281473725599776 Error in quiz generation: 'NoneType' object is not iterable
+INFO 2025-07-03 18:29:40,637 logging_config 21 281473725599776 Traceback (most recent call last):
+
+INFO 2025-07-03 18:29:40,637 logging_config 21 281473725599776   File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+INFO 2025-07-03 18:29:40,638 logging_config 21 281473725599776   File "/app/core/quiz_generator.py", line 1717, in generate_quiz_from_pdf
+    question_objects.append(Question(
+
+ERROR 2025-07-03 18:29:40,638 logging_config 21 281473725599776 TypeError: 'NoneType' object is not iterable
+
+ERROR 2025-07-03 18:29:40,636 tasks 21 281473725599776 Error processing PDF: 'NoneType' object is not iterable
+Traceback (most recent call last):
+  File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/core/quiz_generator.py", line 1717, in generate_quiz_from_pdf
+    question_objects.append(Question(
+TypeError: 'NoneType' object is not iterable
+INFO 2025-07-03 18:29:41,183 basehttp 27 281472416149920 "GET /task-status/426983fe-ff8b-4a20-a636-1f1f9daf5da3/ HTTP/1.1" 200 76
+INFO 2025-07-03 18:29:57,982 autoreload 16 281473661128736 Watching for file changes with StatReloader
+INFO 2025-07-03 18:29:58,423 logging_config 16 281473590555040 July 03, 2025 - 18:29:58
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-03 18:31:26,798 basehttp 16 281473112404384 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-03 18:31:26,815 basehttp 16 281473112404384 "GET /static/core/css/styles.css HTTP/1.1" 304 0
+INFO 2025-07-03 18:34:42,834 autoreload 16 281473661128736 /app/core/quiz_generator.py changed, reloading.
+INFO 2025-07-03 18:34:43,496 autoreload 27 281473624424480 Watching for file changes with StatReloader
+INFO 2025-07-03 18:34:43,907 logging_config 27 281473554903456 July 03, 2025 - 18:34:43
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-03 18:35:22,924 autoreload 16 281473170001952 Watching for file changes with StatReloader
+INFO 2025-07-03 18:35:23,311 logging_config 16 281473099821472 July 03, 2025 - 18:35:23
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-03 18:35:33,625 basehttp 16 281472619573664 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-03 18:35:34,471 basehttp 16 281472619573664 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-03 18:35:46,257 views 16 281472619573664 Quiz form submitted
+INFO 2025-07-03 18:35:46,260 views 16 281472619573664 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-03 18:35:46,260 views 16 281472619573664 PDF file provided: Final.Draft_Highway.Code_2022-1.pdf, size: 27081412 bytes
+INFO 2025-07-03 18:35:46,654 views 16 281472619573664 PDF saved with ID: 36
+INFO 2025-07-03 18:35:46,707 views 16 281472619573664 Started PDF processing task with ID: baf12ee1-f1fa-42af-a02a-97ed81f065fa
+INFO 2025-07-03 18:35:46,712 basehttp 16 281472619573664 "POST / HTTP/1.1" 302 0
+INFO 2025-07-03 18:35:46,717 views 16 281472619573664 Displaying progress page for task: baf12ee1-f1fa-42af-a02a-97ed81f065fa
+INFO 2025-07-03 18:35:46,716 tasks 21 281473725599776 Starting process_pdf_async task: task_id=baf12ee1-f1fa-42af-a02a-97ed81f065fa, pdf_id=36, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-03 18:35:46,719 tasks 21 281473725599776 Step 1: Retrieving PDF object with ID 36
+INFO 2025-07-03 18:35:46,722 basehttp 16 281472619573664 "GET /progress/baf12ee1-f1fa-42af-a02a-97ed81f065fa/ HTTP/1.1" 200 8120
+INFO 2025-07-03 18:35:46,740 tasks 21 281473725599776 PDF object retrieved: UploadedPDF object (36)
+INFO 2025-07-03 18:35:46,740 tasks 21 281473725599776 Step 2: Extracting text from PDF
+INFO 2025-07-03 18:35:46,754 basehttp 16 281472619573664 "GET /task-status/baf12ee1-f1fa-42af-a02a-97ed81f065fa/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:35:47,267 logging_config 21 281473725599776 Saving extracted text for PDF 36
+INFO 2025-07-03 18:35:47,274 logging_config 21 281473725599776 Successfully saved extracted text for PDF 36
+INFO 2025-07-03 18:35:47,771 basehttp 16 281472619573664 "GET /task-status/baf12ee1-f1fa-42af-a02a-97ed81f065fa/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:35:48,785 basehttp 16 281472619573664 "GET /task-status/baf12ee1-f1fa-42af-a02a-97ed81f065fa/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:35:49,800 basehttp 16 281472619573664 "GET /task-status/baf12ee1-f1fa-42af-a02a-97ed81f065fa/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:35:50,811 basehttp 16 281472619573664 "GET /task-status/baf12ee1-f1fa-42af-a02a-97ed81f065fa/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:35:51,820 basehttp 16 281472619573664 "GET /task-status/baf12ee1-f1fa-42af-a02a-97ed81f065fa/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:35:52,833 basehttp 16 281472619573664 "GET /task-status/baf12ee1-f1fa-42af-a02a-97ed81f065fa/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:35:53,850 basehttp 16 281472619573664 "GET /task-status/baf12ee1-f1fa-42af-a02a-97ed81f065fa/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:35:54,867 basehttp 16 281472619573664 "GET /task-status/baf12ee1-f1fa-42af-a02a-97ed81f065fa/ HTTP/1.1" 200 108
+ERROR 2025-07-03 18:35:55,436 logging_config 21 281473725599776 Error in quiz generation: 'NoneType' object is not iterable
+INFO 2025-07-03 18:35:55,438 logging_config 21 281473725599776 Traceback (most recent call last):
+
+INFO 2025-07-03 18:35:55,439 logging_config 21 281473725599776   File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+INFO 2025-07-03 18:35:55,439 logging_config 21 281473725599776   File "/app/core/quiz_generator.py", line 1717, in generate_quiz_from_pdf
+    )
+
+ERROR 2025-07-03 18:35:55,440 logging_config 21 281473725599776 TypeError: 'NoneType' object is not iterable
+
+ERROR 2025-07-03 18:35:55,436 tasks 21 281473725599776 Error processing PDF: 'NoneType' object is not iterable
+Traceback (most recent call last):
+  File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/core/quiz_generator.py", line 1717, in generate_quiz_from_pdf
+    )
+TypeError: 'NoneType' object is not iterable
+INFO 2025-07-03 18:35:55,880 basehttp 16 281472619573664 "GET /task-status/baf12ee1-f1fa-42af-a02a-97ed81f065fa/ HTTP/1.1" 200 76
+INFO 2025-07-03 18:41:27,027 logging_config 1 281473725599776 
+worker: Warm shutdown (MainProcess)
+INFO 2025-07-03 18:44:08,148 logging_config 1 281473138126880  
+ -------------- celery@1e881ce8f519 v5.3.6 (emerald-rush)
+--- ***** ----- 
+-- ******* ---- Linux-6.10.14-linuxkit-aarch64-with-glibc2.36 2025-07-03 18:44:08
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         project:0xffff8f97aa10
+- ** ---------- .> transport:   redis://redis:6379/0
+- ** ---------- .> results:     redis://redis:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . core.tasks.process_pdf_async
+  . project.celery.debug_task
+
+INFO 2025-07-03 18:44:09,096 autoreload 15 281473336291360 Watching for file changes with StatReloader
+INFO 2025-07-03 18:44:09,488 logging_config 15 281473265496480 July 03, 2025 - 18:44:09
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-03 18:44:17,225 basehttp 15 281472787345824 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-03 18:44:17,258 basehttp 15 281472787345824 "GET /static/core/css/styles.css HTTP/1.1" 304 0
+INFO 2025-07-03 18:45:00,757 autoreload 15 281473336291360 /app/core/quiz_generator.py changed, reloading.
+INFO 2025-07-03 18:45:01,435 autoreload 25 281472842219552 Watching for file changes with StatReloader
+INFO 2025-07-03 18:45:01,829 logging_config 25 281472772665760 July 03, 2025 - 18:45:01
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-03 18:45:36,279 views 25 281472281932192 Quiz form submitted
+INFO 2025-07-03 18:45:36,279 views 25 281472281932192 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-03 18:45:36,279 views 25 281472281932192 PDF file provided: Final.Draft_Highway.Code_2022-1.pdf, size: 27081412 bytes
+INFO 2025-07-03 18:45:36,406 views 25 281472281932192 PDF saved with ID: 37
+INFO 2025-07-03 18:45:36,425 views 25 281472281932192 Started PDF processing task with ID: 6812fb13-dcd7-436f-8205-ca08e25a9923
+INFO 2025-07-03 18:45:36,427 basehttp 25 281472281932192 "POST / HTTP/1.1" 302 0
+INFO 2025-07-03 18:45:36,431 views 25 281472281932192 Displaying progress page for task: 6812fb13-dcd7-436f-8205-ca08e25a9923
+INFO 2025-07-03 18:45:36,431 tasks 21 281473138126880 Starting process_pdf_async task: task_id=6812fb13-dcd7-436f-8205-ca08e25a9923, pdf_id=37, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-03 18:45:36,432 tasks 21 281473138126880 Step 1: Retrieving PDF object with ID 37
+INFO 2025-07-03 18:45:36,435 basehttp 25 281472281932192 "GET /progress/6812fb13-dcd7-436f-8205-ca08e25a9923/ HTTP/1.1" 200 8120
+INFO 2025-07-03 18:45:36,445 tasks 21 281473138126880 PDF object retrieved: UploadedPDF object (37)
+INFO 2025-07-03 18:45:36,445 tasks 21 281473138126880 Step 2: Extracting text from PDF
+INFO 2025-07-03 18:45:36,462 basehttp 25 281472281932192 "GET /task-status/6812fb13-dcd7-436f-8205-ca08e25a9923/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:45:36,814 logging_config 21 281473138126880 Saving extracted text for PDF 37
+INFO 2025-07-03 18:45:36,819 logging_config 21 281473138126880 Successfully saved extracted text for PDF 37
+INFO 2025-07-03 18:45:37,471 basehttp 25 281472281932192 "GET /task-status/6812fb13-dcd7-436f-8205-ca08e25a9923/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:45:38,480 basehttp 25 281472281932192 "GET /task-status/6812fb13-dcd7-436f-8205-ca08e25a9923/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:45:39,494 basehttp 25 281472292417952 "GET /task-status/6812fb13-dcd7-436f-8205-ca08e25a9923/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:45:41,202 basehttp 25 281472292417952 "GET /task-status/6812fb13-dcd7-436f-8205-ca08e25a9923/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:45:43,202 basehttp 25 281472292417952 "GET /task-status/6812fb13-dcd7-436f-8205-ca08e25a9923/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:45:45,203 basehttp 25 281472292417952 "GET /task-status/6812fb13-dcd7-436f-8205-ca08e25a9923/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:45:47,202 basehttp 25 281472292417952 "GET /task-status/6812fb13-dcd7-436f-8205-ca08e25a9923/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:45:47,729 tasks 21 281473138126880 Setting final progress: {'step': 5, 'total_steps': 5, 'percent': 100, 'message': 'Quiz generation complete!', 'status': 'SUCCESS', 'quiz_id': 10}
+INFO 2025-07-03 18:45:49,200 views 25 281472292417952 Task 6812fb13-dcd7-436f-8205-ca08e25a9923 completed successfully with quiz_id: 10
+INFO 2025-07-03 18:45:49,201 basehttp 25 281472292417952 "GET /task-status/6812fb13-dcd7-436f-8205-ca08e25a9923/ HTTP/1.1" 200 150
+INFO 2025-07-03 18:45:51,203 views 25 281472292417952 Displaying interactive quiz with ID: 10
+INFO 2025-07-03 18:45:51,229 basehttp 25 281472292417952 "GET /quiz/10/ HTTP/1.1" 200 14973
+INFO 2025-07-03 18:50:51,348 views 25 281472281932192 Displaying interactive quiz with ID: 10
+INFO 2025-07-03 18:50:51,394 basehttp 25 281472281932192 "GET /quiz/10/ HTTP/1.1" 200 14973
+INFO 2025-07-03 18:50:51,407 basehttp 25 281472281932192 "GET /static/core/css/styles.css HTTP/1.1" 304 0
+INFO 2025-07-03 18:50:51,867 views 25 281472281932192 Displaying interactive quiz with ID: 10
+INFO 2025-07-03 18:50:51,885 basehttp 25 281472281932192 "GET /quiz/10/ HTTP/1.1" 200 14973
+INFO 2025-07-03 18:51:16,757 autoreload 16 281473628213280 Watching for file changes with StatReloader
+INFO 2025-07-03 18:51:17,162 logging_config 16 281473559097760 July 03, 2025 - 18:51:17
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-03 18:53:02,032 views 16 281473076752800 Displaying interactive quiz with ID: 10
+INFO 2025-07-03 18:53:02,080 basehttp 16 281473076752800 "GET /quiz/10/ HTTP/1.1" 200 14973
+INFO 2025-07-03 18:53:02,632 views 16 281473076752800 Displaying interactive quiz with ID: 10
+INFO 2025-07-03 18:53:02,647 basehttp 16 281473076752800 "GET /quiz/10/ HTTP/1.1" 200 14973
+INFO 2025-07-03 18:53:03,232 views 16 281473076752800 Displaying interactive quiz with ID: 10
+INFO 2025-07-03 18:53:03,248 basehttp 16 281473076752800 "GET /quiz/10/ HTTP/1.1" 200 14973
+INFO 2025-07-03 18:53:15,219 views 16 281473076752800 Displaying interactive quiz with ID: 10
+INFO 2025-07-03 18:53:15,240 basehttp 16 281473076752800 "GET /quiz/10/ HTTP/1.1" 200 16762
+INFO 2025-07-03 18:55:17,168 views 16 281473076752800 Processing quiz submission for quiz ID: 10
+INFO 2025-07-03 18:55:17,198 views 16 281473076752800 Quiz 10 score: 77.77777777777779% (7/9)
+INFO 2025-07-03 18:55:17,202 views 16 281473076752800 Weak topics identified for quiz 10: General
+INFO 2025-07-03 18:55:17,202 views 16 281473076752800 Generating feedback for average performance: 77.77777777777779%
+INFO 2025-07-03 18:55:17,210 basehttp 16 281473076752800 "POST /quiz/10/submit/ HTTP/1.1" 200 15691
+INFO 2025-07-03 18:55:46,089 basehttp 16 281473066267040 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-03 18:55:56,079 views 16 281473066267040 Quiz form submitted
+INFO 2025-07-03 18:55:56,082 views 16 281473066267040 Form is valid. num_questions=10, difficulty=hard, exam_style=SAT, include_long_answer=False
+INFO 2025-07-03 18:55:56,083 views 16 281473066267040 Using exam style: SAT
+INFO 2025-07-03 18:55:56,140 views 16 281473066267040 Started exam style processing task with ID: cccd9a91-c460-4405-b76c-e2621d067c7d
+INFO 2025-07-03 18:55:56,141 basehttp 16 281473066267040 "POST / HTTP/1.1" 302 0
+INFO 2025-07-03 18:55:56,144 views 16 281473066267040 Displaying progress page for task: cccd9a91-c460-4405-b76c-e2621d067c7d
+INFO 2025-07-03 18:55:56,146 basehttp 16 281473066267040 "GET /progress/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 8120
+INFO 2025-07-03 18:55:56,149 tasks 21 281473138126880 Starting process_pdf_async task: task_id=cccd9a91-c460-4405-b76c-e2621d067c7d, pdf_id=None, exam_style=SAT, num_questions=10, difficulty=hard
+INFO 2025-07-03 18:55:56,150 tasks 21 281473138126880 Using exam style: SAT
+INFO 2025-07-03 18:55:56,159 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 115
+INFO 2025-07-03 18:55:57,170 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:55:58,181 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:55:59,193 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:00,206 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:01,216 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:02,234 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:04,205 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:06,209 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:08,205 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:10,206 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:12,208 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:13,268 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:14,275 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:15,284 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:16,292 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:17,299 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:18,309 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:19,319 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:20,332 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:21,342 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:23,207 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:24,217 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:25,231 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:26,242 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:27,253 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:28,266 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:29,275 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:30,288 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+INFO 2025-07-03 18:56:31,296 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 107
+ERROR 2025-07-03 18:56:31,986 logging_config 21 281473138126880 Error in quiz generation: name 'TokenObjects' is not defined
+INFO 2025-07-03 18:56:31,989 logging_config 21 281473138126880 Traceback (most recent call last):
+
+INFO 2025-07-03 18:56:31,991 logging_config 21 281473138126880   File "/app/core/tasks.py", line 111, in process_pdf_async
+    result = generate_quiz_from_exam_style(exam_style, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+INFO 2025-07-03 18:56:31,991 logging_config 21 281473138126880   File "/app/core/quiz_generator.py", line 1516, in generate_quiz_from_exam_style
+    if include_long_answer:
+                      ^^^^^^
+
+ERROR 2025-07-03 18:56:31,992 logging_config 21 281473138126880 NameError: name 'TokenObjects' is not defined
+
+ERROR 2025-07-03 18:56:31,987 tasks 21 281473138126880 Error processing PDF: name 'TokenObjects' is not defined
+Traceback (most recent call last):
+  File "/app/core/tasks.py", line 111, in process_pdf_async
+    result = generate_quiz_from_exam_style(exam_style, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/core/quiz_generator.py", line 1516, in generate_quiz_from_exam_style
+    if include_long_answer:
+                      ^^^^^^
+NameError: name 'TokenObjects' is not defined
+INFO 2025-07-03 18:56:32,307 basehttp 16 281473066267040 "GET /task-status/cccd9a91-c460-4405-b76c-e2621d067c7d/ HTTP/1.1" 200 77
+INFO 2025-07-03 18:56:33,760 basehttp 16 281473066267040 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-03 18:56:43,456 views 16 281473076752800 Quiz form submitted
+INFO 2025-07-03 18:56:43,457 views 16 281473076752800 Form is valid. num_questions=30, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-03 18:56:43,457 views 16 281473076752800 PDF file provided: Final.Draft_Highway.Code_2022-1.pdf, size: 27081412 bytes
+INFO 2025-07-03 18:56:43,613 views 16 281473076752800 PDF saved with ID: 38
+INFO 2025-07-03 18:56:43,628 views 16 281473076752800 Started PDF processing task with ID: 9ca25e74-b136-4be6-9681-69700330517f
+INFO 2025-07-03 18:56:43,628 basehttp 16 281473076752800 "POST / HTTP/1.1" 302 0
+INFO 2025-07-03 18:56:43,631 tasks 21 281473138126880 Starting process_pdf_async task: task_id=9ca25e74-b136-4be6-9681-69700330517f, pdf_id=38, exam_style=None, num_questions=30, difficulty=hard
+INFO 2025-07-03 18:56:43,632 tasks 21 281473138126880 Step 1: Retrieving PDF object with ID 38
+INFO 2025-07-03 18:56:43,633 views 16 281473076752800 Displaying progress page for task: 9ca25e74-b136-4be6-9681-69700330517f
+INFO 2025-07-03 18:56:43,635 basehttp 16 281473076752800 "GET /progress/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 8120
+INFO 2025-07-03 18:56:43,641 tasks 21 281473138126880 PDF object retrieved: UploadedPDF object (38)
+INFO 2025-07-03 18:56:43,642 tasks 21 281473138126880 Step 2: Extracting text from PDF
+INFO 2025-07-03 18:56:43,655 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:43,984 logging_config 21 281473138126880 Saving extracted text for PDF 38
+INFO 2025-07-03 18:56:43,989 logging_config 21 281473138126880 Successfully saved extracted text for PDF 38
+INFO 2025-07-03 18:56:44,668 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:45,678 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:46,689 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:47,698 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:48,710 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:49,721 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:50,733 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:51,744 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:52,753 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:53,763 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:54,774 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:55,782 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:56,789 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:57,800 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:58,810 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:56:59,823 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:57:00,835 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:57:01,847 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:57:02,859 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 108
+INFO 2025-07-03 18:57:02,941 tasks 21 281473138126880 Setting final progress: {'step': 5, 'total_steps': 5, 'percent': 100, 'message': 'Quiz generation complete!', 'status': 'SUCCESS', 'quiz_id': 11}
+INFO 2025-07-03 18:57:03,875 views 16 281473076752800 Task 9ca25e74-b136-4be6-9681-69700330517f completed successfully with quiz_id: 11
+INFO 2025-07-03 18:57:03,877 basehttp 16 281473076752800 "GET /task-status/9ca25e74-b136-4be6-9681-69700330517f/ HTTP/1.1" 200 150
+INFO 2025-07-03 18:57:04,896 views 16 281473076752800 Displaying interactive quiz with ID: 11
+INFO 2025-07-03 18:57:04,923 basehttp 16 281473076752800 "GET /quiz/11/ HTTP/1.1" 200 54016
+INFO 2025-07-03 19:01:25,488 views 16 281473066267040 Processing quiz submission for quiz ID: 11
+INFO 2025-07-03 19:01:25,548 views 16 281473066267040 Quiz 11 score: 80.0% (20/25)
+INFO 2025-07-03 19:01:25,558 views 16 281473066267040 Weak topics identified for quiz 11: General
+INFO 2025-07-03 19:01:25,558 views 16 281473066267040 Generating feedback for high performance: 80.0%
+INFO 2025-07-03 19:01:25,566 basehttp 16 281473066267040 "POST /quiz/11/submit/ HTTP/1.1" 200 34967
+INFO 2025-07-03 19:01:25,584 basehttp 16 281473066267040 "GET /static/core/css/styles.css HTTP/1.1" 304 0
+INFO 2025-07-03 19:01:38,723 views 16 281473066267040 Displaying interactive quiz with ID: 11
+INFO 2025-07-03 19:01:38,753 basehttp 16 281473066267040 "GET /quiz/11/ HTTP/1.1" 200 54016
+INFO 2025-07-03 19:01:50,003 basehttp 16 281473066267040 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-03 19:02:02,445 views 16 281473066267040 Quiz form submitted
+INFO 2025-07-03 19:02:02,446 views 16 281473066267040 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=True
+INFO 2025-07-03 19:02:02,446 views 16 281473066267040 PDF file provided: Final.Draft_Highway.Code_2022-1.pdf, size: 27081412 bytes
+INFO 2025-07-03 19:02:02,607 views 16 281473066267040 PDF saved with ID: 39
+INFO 2025-07-03 19:02:02,618 views 16 281473066267040 Started PDF processing task with ID: 2b9d33be-5ba5-4195-bcbb-4997595634ae
+INFO 2025-07-03 19:02:02,619 basehttp 16 281473066267040 "POST / HTTP/1.1" 302 0
+INFO 2025-07-03 19:02:02,622 views 16 281473066267040 Displaying progress page for task: 2b9d33be-5ba5-4195-bcbb-4997595634ae
+INFO 2025-07-03 19:02:02,622 basehttp 16 281473066267040 "GET /progress/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 8120
+INFO 2025-07-03 19:02:02,629 tasks 21 281473138126880 Starting process_pdf_async task: task_id=2b9d33be-5ba5-4195-bcbb-4997595634ae, pdf_id=39, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-03 19:02:02,631 tasks 21 281473138126880 Step 1: Retrieving PDF object with ID 39
+INFO 2025-07-03 19:02:02,642 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 103
+INFO 2025-07-03 19:02:02,650 tasks 21 281473138126880 PDF object retrieved: UploadedPDF object (39)
+INFO 2025-07-03 19:02:02,651 tasks 21 281473138126880 Step 2: Extracting text from PDF
+INFO 2025-07-03 19:02:03,025 logging_config 21 281473138126880 Saving extracted text for PDF 39
+INFO 2025-07-03 19:02:03,030 logging_config 21 281473138126880 Successfully saved extracted text for PDF 39
+INFO 2025-07-03 19:02:03,654 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 108
+INFO 2025-07-03 19:02:04,667 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 108
+INFO 2025-07-03 19:02:05,677 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 108
+INFO 2025-07-03 19:02:06,689 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 108
+INFO 2025-07-03 19:02:07,700 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 108
+INFO 2025-07-03 19:02:08,711 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 108
+INFO 2025-07-03 19:02:09,724 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 108
+INFO 2025-07-03 19:02:10,734 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 108
+INFO 2025-07-03 19:02:11,745 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 108
+INFO 2025-07-03 19:02:12,757 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 108
+INFO 2025-07-03 19:02:13,769 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 108
+INFO 2025-07-03 19:02:14,784 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 108
+INFO 2025-07-03 19:02:15,639 tasks 21 281473138126880 Setting final progress: {'step': 5, 'total_steps': 5, 'percent': 100, 'message': 'Quiz generation complete!', 'status': 'SUCCESS', 'quiz_id': 12}
+INFO 2025-07-03 19:02:15,794 views 16 281473066267040 Task 2b9d33be-5ba5-4195-bcbb-4997595634ae completed successfully with quiz_id: 12
+INFO 2025-07-03 19:02:15,795 basehttp 16 281473066267040 "GET /task-status/2b9d33be-5ba5-4195-bcbb-4997595634ae/ HTTP/1.1" 200 150
+INFO 2025-07-03 19:02:16,815 views 16 281473066267040 Displaying interactive quiz with ID: 12
+INFO 2025-07-03 19:02:16,841 basehttp 16 281473066267040 "GET /quiz/12/ HTTP/1.1" 200 28081
+INFO 2025-07-03 19:02:46,331 views 16 281473066267040 Processing quiz submission for quiz ID: 12
+INFO 2025-07-03 19:02:46,357 views 16 281473066267040 Quiz 12 score: 66.66666666666666% (4/6)
+INFO 2025-07-03 19:02:46,363 views 16 281473066267040 Weak topics identified for quiz 12: General
+INFO 2025-07-03 19:02:46,363 views 16 281473066267040 Generating feedback for average performance: 66.66666666666666%
+INFO 2025-07-03 19:02:46,368 basehttp 16 281473066267040 "POST /quiz/12/submit/ HTTP/1.1" 200 13940
+INFO 2025-07-03 19:02:54,940 views 16 281473066267040 Displaying interactive quiz with ID: 12
+INFO 2025-07-03 19:02:54,957 basehttp 16 281473066267040 "GET /quiz/12/ HTTP/1.1" 200 28081
+INFO 2025-07-03 19:03:04,478 basehttp 16 281473066267040 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 04:49:07,248 logging_config 1 281473575280672  
+ -------------- celery@1e881ce8f519 v5.3.6 (emerald-rush)
+--- ***** ----- 
+-- ******* ---- Linux-6.10.14-linuxkit-aarch64-with-glibc2.36 2025-07-04 04:49:07
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         project:0xffffa9a6c7d0
+- ** ---------- .> transport:   redis://redis:6379/0
+- ** ---------- .> results:     redis://redis:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . core.tasks.process_pdf_async
+  . project.celery.debug_task
+
+INFO 2025-07-04 04:49:08,248 autoreload 16 281473431523360 Watching for file changes with StatReloader
+INFO 2025-07-04 04:49:08,622 logging_config 16 281473361965472 July 04, 2025 - 04:49:08
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-04 04:49:10,988 basehttp 16 281472875426208 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 04:49:10,996 basehttp 16 281472875426208 "GET /static/core/css/styles.css HTTP/1.1" 304 0
+WARNING 2025-07-04 04:49:12,303 log 16 281472875426208 Not Found: /favicon.ico
+WARNING 2025-07-04 04:49:12,303 basehttp 16 281472875426208 "GET /favicon.ico HTTP/1.1" 404 3317
+INFO 2025-07-04 04:50:07,649 views 16 281472875426208 Quiz form submitted
+INFO 2025-07-04 04:50:07,651 views 16 281472875426208 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-04 04:50:07,651 views 16 281472875426208 PDF file provided: S.2-BIOLOGY-NOTES-.pdf, size: 2103765 bytes
+INFO 2025-07-04 04:50:07,664 views 16 281472875426208 PDF saved with ID: 72
+INFO 2025-07-04 04:50:07,682 views 16 281472875426208 Started PDF processing task with ID: 844d9c97-a891-4f80-9518-ed39a8d8c93a
+INFO 2025-07-04 04:50:07,684 basehttp 16 281472875426208 "POST / HTTP/1.1" 302 0
+INFO 2025-07-04 04:50:07,687 views 16 281472875426208 Displaying progress page for task: 844d9c97-a891-4f80-9518-ed39a8d8c93a
+INFO 2025-07-04 04:50:07,686 tasks 21 281473575280672 Starting process_pdf_async task: task_id=844d9c97-a891-4f80-9518-ed39a8d8c93a, pdf_id=72, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-04 04:50:07,687 tasks 21 281473575280672 Step 1: Retrieving PDF object with ID 72
+INFO 2025-07-04 04:50:07,689 basehttp 16 281472875426208 "GET /progress/844d9c97-a891-4f80-9518-ed39a8d8c93a/ HTTP/1.1" 200 8120
+INFO 2025-07-04 04:50:07,704 basehttp 16 281472875426208 "GET /task-status/844d9c97-a891-4f80-9518-ed39a8d8c93a/ HTTP/1.1" 200 103
+INFO 2025-07-04 04:50:07,710 tasks 21 281473575280672 PDF object retrieved: UploadedPDF object (72)
+INFO 2025-07-04 04:50:07,710 tasks 21 281473575280672 Step 2: Extracting text from PDF
+ERROR 2025-07-04 04:50:07,742 logging_config 21 281473575280672 PyPDF2 failed: string indices must be integers, not 'str', trying PyPDFium2
+ERROR 2025-07-04 04:50:07,811 logging_config 21 281473575280672 PyPDFium2 also failed: Failed to load page.
+ERROR 2025-07-04 04:50:07,811 logging_config 21 281473575280672 Error in quiz generation: No text could be extracted from the PDF
+INFO 2025-07-04 04:50:07,812 logging_config 21 281473575280672 Traceback (most recent call last):
+
+INFO 2025-07-04 04:50:07,812 logging_config 21 281473575280672   File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+INFO 2025-07-04 04:50:07,813 logging_config 21 281473575280672   File "/app/core/quiz_generator.py", line 1637, in generate_quiz_from_pdf
+    raise Exception("No text could be extracted from the PDF")
+
+INFO 2025-07-04 04:50:07,813 logging_config 21 281473575280672 Exception: No text could be extracted from the PDF
+
+ERROR 2025-07-04 04:50:07,811 tasks 21 281473575280672 Error processing PDF: No text could be extracted from the PDF
+Traceback (most recent call last):
+  File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/core/quiz_generator.py", line 1637, in generate_quiz_from_pdf
+    raise Exception("No text could be extracted from the PDF")
+Exception: No text could be extracted from the PDF
+INFO 2025-07-04 04:50:08,715 basehttp 16 281472875426208 "GET /task-status/844d9c97-a891-4f80-9518-ed39a8d8c93a/ HTTP/1.1" 200 82
+INFO 2025-07-04 04:55:30,826 basehttp 16 281472875426208 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 04:55:41,444 views 16 281472875426208 Quiz form submitted
+INFO 2025-07-04 04:55:41,444 views 16 281472875426208 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-04 04:55:41,445 views 16 281472875426208 PDF file provided: S.2-BIOLOGY-NOTES-.pdf, size: 2103765 bytes
+INFO 2025-07-04 04:55:41,455 views 16 281472875426208 PDF saved with ID: 73
+INFO 2025-07-04 04:55:41,461 views 16 281472875426208 Started PDF processing task with ID: 9eec6ee3-f03f-4cce-972d-690bd9b30411
+INFO 2025-07-04 04:55:41,461 basehttp 16 281472875426208 "POST / HTTP/1.1" 302 0
+INFO 2025-07-04 04:55:41,461 tasks 21 281473575280672 Starting process_pdf_async task: task_id=9eec6ee3-f03f-4cce-972d-690bd9b30411, pdf_id=73, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-04 04:55:41,462 tasks 21 281473575280672 Step 1: Retrieving PDF object with ID 73
+INFO 2025-07-04 04:55:41,464 views 16 281472875426208 Displaying progress page for task: 9eec6ee3-f03f-4cce-972d-690bd9b30411
+INFO 2025-07-04 04:55:41,464 basehttp 16 281472875426208 "GET /progress/9eec6ee3-f03f-4cce-972d-690bd9b30411/ HTTP/1.1" 200 8120
+INFO 2025-07-04 04:55:41,466 tasks 21 281473575280672 PDF object retrieved: UploadedPDF object (73)
+INFO 2025-07-04 04:55:41,466 tasks 21 281473575280672 Step 2: Extracting text from PDF
+INFO 2025-07-04 04:55:41,491 basehttp 16 281472875426208 "GET /task-status/9eec6ee3-f03f-4cce-972d-690bd9b30411/ HTTP/1.1" 200 108
+ERROR 2025-07-04 04:55:41,515 logging_config 21 281473575280672 PyPDF2 failed: string indices must be integers, not 'str', trying PyPDFium2
+ERROR 2025-07-04 04:55:41,542 logging_config 21 281473575280672 PyPDFium2 also failed: Failed to load page.
+ERROR 2025-07-04 04:55:41,542 logging_config 21 281473575280672 Error in quiz generation: No text could be extracted from the PDF
+INFO 2025-07-04 04:55:41,543 logging_config 21 281473575280672 Traceback (most recent call last):
+
+INFO 2025-07-04 04:55:41,543 logging_config 21 281473575280672   File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+INFO 2025-07-04 04:55:41,544 logging_config 21 281473575280672   File "/app/core/quiz_generator.py", line 1637, in generate_quiz_from_pdf
+    raise Exception("No text could be extracted from the PDF")
+
+INFO 2025-07-04 04:55:41,545 logging_config 21 281473575280672 Exception: No text could be extracted from the PDF
+
+ERROR 2025-07-04 04:55:41,543 tasks 21 281473575280672 Error processing PDF: No text could be extracted from the PDF
+Traceback (most recent call last):
+  File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/core/quiz_generator.py", line 1637, in generate_quiz_from_pdf
+    raise Exception("No text could be extracted from the PDF")
+Exception: No text could be extracted from the PDF
+INFO 2025-07-04 04:55:42,501 basehttp 16 281472875426208 "GET /task-status/9eec6ee3-f03f-4cce-972d-690bd9b30411/ HTTP/1.1" 200 82
+INFO 2025-07-04 04:57:11,632 autoreload 16 281473431523360 /app/core/quiz_generator.py changed, reloading.
+INFO 2025-07-04 04:57:12,203 autoreload 29 281473457360928 Watching for file changes with StatReloader
+INFO 2025-07-04 04:57:12,581 logging_config 29 281473387131296 July 04, 2025 - 04:57:12
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-04 04:57:31,632 basehttp 29 281472908980640 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 04:57:45,338 views 29 281472908980640 Quiz form submitted
+INFO 2025-07-04 04:57:45,339 views 29 281472908980640 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-04 04:57:45,339 views 29 281472908980640 PDF file provided: S.2-BIOLOGY-NOTES-.pdf, size: 2103765 bytes
+INFO 2025-07-04 04:57:45,351 views 29 281472908980640 PDF saved with ID: 74
+INFO 2025-07-04 04:57:45,371 views 29 281472908980640 Started PDF processing task with ID: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 04:57:45,372 tasks 21 281473575280672 Starting process_pdf_async task: task_id=7e181843-260c-4f05-a67e-d6432ff30062, pdf_id=74, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-04 04:57:45,374 tasks 21 281473575280672 Step 1: Retrieving PDF object with ID 74
+INFO 2025-07-04 04:57:45,374 basehttp 29 281472908980640 "POST / HTTP/1.1" 302 0
+INFO 2025-07-04 04:57:45,377 views 29 281472908980640 Displaying progress page for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 04:57:45,379 basehttp 29 281472908980640 "GET /progress/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 8120
+INFO 2025-07-04 04:57:45,380 tasks 21 281473575280672 PDF object retrieved: UploadedPDF object (74)
+INFO 2025-07-04 04:57:45,380 tasks 21 281473575280672 Step 2: Extracting text from PDF
+INFO 2025-07-04 04:57:45,396 basehttp 29 281472908980640 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 108
+ERROR 2025-07-04 04:57:45,419 logging_config 21 281473575280672 PyPDF2 failed: string indices must be integers, not 'str', trying PyPDFium2
+ERROR 2025-07-04 04:57:45,443 logging_config 21 281473575280672 PyPDFium2 also failed: Failed to load page.
+ERROR 2025-07-04 04:57:45,443 logging_config 21 281473575280672 Error in quiz generation: No text could be extracted from the PDF
+INFO 2025-07-04 04:57:45,445 logging_config 21 281473575280672 Traceback (most recent call last):
+
+INFO 2025-07-04 04:57:45,446 logging_config 21 281473575280672   File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+INFO 2025-07-04 04:57:45,446 logging_config 21 281473575280672   File "/app/core/quiz_generator.py", line 1637, in generate_quiz_from_pdf
+    num_questions: Number of questions to generate
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+INFO 2025-07-04 04:57:45,446 logging_config 21 281473575280672 Exception: No text could be extracted from the PDF
+
+ERROR 2025-07-04 04:57:45,443 tasks 21 281473575280672 Error processing PDF: No text could be extracted from the PDF
+Traceback (most recent call last):
+  File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/core/quiz_generator.py", line 1637, in generate_quiz_from_pdf
+    num_questions: Number of questions to generate
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Exception: No text could be extracted from the PDF
+INFO 2025-07-04 04:57:46,402 basehttp 29 281472908980640 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 82
+INFO 2025-07-04 04:58:27,241 autoreload 29 281473457360928 /app/core/quiz_generator.py changed, reloading.
+INFO 2025-07-04 04:58:27,773 autoreload 40 281473695494176 Watching for file changes with StatReloader
+INFO 2025-07-04 04:58:28,160 logging_config 40 281473626206624 July 04, 2025 - 04:58:28
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-04 04:59:57,023 autoreload 40 281473695494176 /app/core/quiz_generator.py changed, reloading.
+INFO 2025-07-04 04:59:57,672 autoreload 49 281473588305952 Watching for file changes with StatReloader
+INFO 2025-07-04 04:59:58,040 logging_config 49 281473519251872 July 04, 2025 - 04:59:58
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-04 05:00:55,240 autoreload 49 281473588305952 /app/core/quiz_generator.py changed, reloading.
+INFO 2025-07-04 05:00:55,745 autoreload 58 281473145143328 Watching for file changes with StatReloader
+INFO 2025-07-04 05:00:56,178 logging_config 58 281473074655648 July 04, 2025 - 05:00:56
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-04 08:21:54,953 views 58 281472596504992 Displaying progress page for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:21:54,967 basehttp 58 281472596504992 "GET /progress/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 8120
+INFO 2025-07-04 08:21:54,982 basehttp 58 281472596504992 "GET /static/core/css/styles.css HTTP/1.1" 304 0
+WARNING 2025-07-04 08:21:54,996 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:21:54,996 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:21:56,023 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:21:56,025 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:21:57,033 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:21:57,034 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:21:58,044 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:21:58,046 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:21:59,053 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:21:59,054 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:00,679 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:00,680 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:02,682 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:02,684 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:04,682 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:04,684 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:06,681 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:06,682 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:08,680 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:08,680 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:10,682 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:10,683 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:12,682 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:12,686 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:14,682 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:14,683 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:16,680 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:16,681 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:18,680 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:18,681 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:20,682 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:20,683 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:22,680 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:22,681 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:24,682 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:24,682 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:26,681 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:26,682 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:27,691 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:27,692 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:28,701 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:28,702 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+INFO 2025-07-04 08:22:29,332 views 58 281472596504992 Displaying progress page for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:29,334 basehttp 58 281472596504992 "GET /progress/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 8120
+WARNING 2025-07-04 08:22:29,351 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:29,352 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+WARNING 2025-07-04 08:22:30,370 views 58 281472596504992 Task progress not found in cache for task: 7e181843-260c-4f05-a67e-d6432ff30062
+INFO 2025-07-04 08:22:30,371 basehttp 58 281472596504992 "GET /task-status/7e181843-260c-4f05-a67e-d6432ff30062/ HTTP/1.1" 200 78
+INFO 2025-07-04 08:22:30,910 basehttp 58 281472596504992 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 08:22:42,860 views 58 281472596504992 Quiz form submitted
+INFO 2025-07-04 08:22:42,861 views 58 281472596504992 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-04 08:22:42,861 views 58 281472596504992 PDF file provided: S.2-BIOLOGY-NOTES-.pdf, size: 2103765 bytes
+INFO 2025-07-04 08:22:42,874 views 58 281472596504992 PDF saved with ID: 75
+INFO 2025-07-04 08:22:42,891 views 58 281472596504992 Started PDF processing task with ID: a71553ea-f3ff-4ee9-b727-8642a515f85a
+INFO 2025-07-04 08:22:42,892 basehttp 58 281472596504992 "POST / HTTP/1.1" 302 0
+INFO 2025-07-04 08:22:42,893 tasks 21 281473575280672 Starting process_pdf_async task: task_id=a71553ea-f3ff-4ee9-b727-8642a515f85a, pdf_id=75, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-04 08:22:42,893 tasks 21 281473575280672 Step 1: Retrieving PDF object with ID 75
+INFO 2025-07-04 08:22:42,895 views 58 281472596504992 Displaying progress page for task: a71553ea-f3ff-4ee9-b727-8642a515f85a
+INFO 2025-07-04 08:22:42,896 basehttp 58 281472596504992 "GET /progress/a71553ea-f3ff-4ee9-b727-8642a515f85a/ HTTP/1.1" 200 8120
+INFO 2025-07-04 08:22:42,900 tasks 21 281473575280672 PDF object retrieved: UploadedPDF object (75)
+INFO 2025-07-04 08:22:42,900 tasks 21 281473575280672 Step 2: Extracting text from PDF
+INFO 2025-07-04 08:22:42,911 basehttp 58 281472596504992 "GET /task-status/a71553ea-f3ff-4ee9-b727-8642a515f85a/ HTTP/1.1" 200 108
+ERROR 2025-07-04 08:22:42,938 logging_config 21 281473575280672 PyPDF2 failed: string indices must be integers, not 'str', trying PyPDFium2
+ERROR 2025-07-04 08:22:42,964 logging_config 21 281473575280672 PyPDFium2 also failed: Failed to load page.
+ERROR 2025-07-04 08:22:42,964 logging_config 21 281473575280672 Error in quiz generation: No text could be extracted from the PDF
+INFO 2025-07-04 08:22:42,965 logging_config 21 281473575280672 Traceback (most recent call last):
+
+INFO 2025-07-04 08:22:42,965 logging_config 21 281473575280672   File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ERROR 2025-07-04 08:22:42,966 logging_config 21 281473575280672   File "/app/core/quiz_generator.py", line 1637, in generate_quiz_from_pdf
+    print(f"Error in quiz generation: {e}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+INFO 2025-07-04 08:22:42,966 logging_config 21 281473575280672 Exception: No text could be extracted from the PDF
+
+ERROR 2025-07-04 08:22:42,964 tasks 21 281473575280672 Error processing PDF: No text could be extracted from the PDF
+Traceback (most recent call last):
+  File "/app/core/tasks.py", line 105, in process_pdf_async
+    result = generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=task_id, include_long_answer=include_long_answer, exam_style=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/core/quiz_generator.py", line 1637, in generate_quiz_from_pdf
+    print(f"Error in quiz generation: {e}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Exception: No text could be extracted from the PDF
+INFO 2025-07-04 08:22:43,923 basehttp 58 281472596504992 "GET /task-status/a71553ea-f3ff-4ee9-b727-8642a515f85a/ HTTP/1.1" 200 82
+INFO 2025-07-04 08:22:50,631 views 58 281472596504992 Displaying progress page for task: a71553ea-f3ff-4ee9-b727-8642a515f85a
+INFO 2025-07-04 08:22:50,634 basehttp 58 281472596504992 "GET /progress/a71553ea-f3ff-4ee9-b727-8642a515f85a/ HTTP/1.1" 200 8120
+INFO 2025-07-04 08:22:50,650 basehttp 58 281472596504992 "GET /task-status/a71553ea-f3ff-4ee9-b727-8642a515f85a/ HTTP/1.1" 200 82
+INFO 2025-07-04 08:24:26,615 autoreload 58 281473145143328 /app/core/tasks.py changed, reloading.
+INFO 2025-07-04 08:24:27,129 autoreload 69 281473300041760 Watching for file changes with StatReloader
+INFO 2025-07-04 08:24:27,556 logging_config 69 281473229844896 July 04, 2025 - 08:24:27
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-04 08:25:06,291 basehttp 69 281472751694240 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 08:25:25,775 views 69 281472751694240 Quiz form submitted
+INFO 2025-07-04 08:25:25,775 views 69 281472751694240 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-04 08:25:25,775 views 69 281472751694240 PDF file provided: S.2-BIOLOGY-NOTES-.pdf, size: 2103765 bytes
+INFO 2025-07-04 08:25:25,786 views 69 281472751694240 PDF saved with ID: 76
+INFO 2025-07-04 08:25:25,804 views 69 281472751694240 Started PDF processing task with ID: b116f256-ec06-4afc-ac57-25ad76c7bf0f
+INFO 2025-07-04 08:25:25,805 tasks 21 281473575280672 Starting process_pdf_async task: task_id=b116f256-ec06-4afc-ac57-25ad76c7bf0f, pdf_id=76, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-04 08:25:25,806 tasks 21 281473575280672 Step 1: Retrieving PDF object with ID 76
+INFO 2025-07-04 08:25:25,806 basehttp 69 281472751694240 "POST / HTTP/1.1" 302 0
+INFO 2025-07-04 08:25:25,810 views 69 281472751694240 Displaying progress page for task: b116f256-ec06-4afc-ac57-25ad76c7bf0f
+INFO 2025-07-04 08:25:25,811 basehttp 69 281472751694240 "GET /progress/b116f256-ec06-4afc-ac57-25ad76c7bf0f/ HTTP/1.1" 200 8120
+INFO 2025-07-04 08:25:25,812 tasks 21 281473575280672 PDF object retrieved: UploadedPDF object (76)
+INFO 2025-07-04 08:25:25,812 tasks 21 281473575280672 Step 2: Extracting text from PDF
+INFO 2025-07-04 08:25:25,826 basehttp 69 281472751694240 "GET /task-status/b116f256-ec06-4afc-ac57-25ad76c7bf0f/ HTTP/1.1" 200 108
+ERROR 2025-07-04 08:25:25,850 logging_config 21 281473575280672 PyPDF2 failed: string indices must be integers, not 'str', trying PyPDFium2
+ERROR 2025-07-04 08:25:25,875 logging_config 21 281473575280672 PyPDFium2 also failed: Failed to load page.
+ERROR 2025-07-04 08:25:25,875 logging_config 21 281473575280672 Error in quiz generation: No text could be extracted from the PDF
+INFO 2025-07-04 08:25:25,876 logging_config 21 281473575280672 Traceback (most recent call last):
+
+INFO 2025-07-04 08:25:25,877 logging_config 21 281473575280672   File "/app/core/tasks.py", line 105, in process_pdf_async
+    try:
+         
+
+ERROR 2025-07-04 08:25:25,877 logging_config 21 281473575280672   File "/app/core/quiz_generator.py", line 1637, in generate_quiz_from_pdf
+    print(f"Error in quiz generation: {e}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+INFO 2025-07-04 08:25:25,877 logging_config 21 281473575280672 Exception: No text could be extracted from the PDF
+
+ERROR 2025-07-04 08:25:25,875 tasks 21 281473575280672 Error processing PDF: No text could be extracted from the PDF
+Traceback (most recent call last):
+  File "/app/core/tasks.py", line 105, in process_pdf_async
+    try:
+         
+  File "/app/core/quiz_generator.py", line 1637, in generate_quiz_from_pdf
+    print(f"Error in quiz generation: {e}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Exception: No text could be extracted from the PDF
+INFO 2025-07-04 08:25:26,837 basehttp 69 281472751694240 "GET /task-status/b116f256-ec06-4afc-ac57-25ad76c7bf0f/ HTTP/1.1" 200 82
+INFO 2025-07-04 08:25:29,119 basehttp 69 281472751694240 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 08:26:01,233 views 69 281472751694240 Quiz form submitted
+INFO 2025-07-04 08:26:01,233 views 69 281472751694240 Form is valid. num_questions=10, difficulty=easy, exam_style=, include_long_answer=False
+INFO 2025-07-04 08:26:01,234 views 69 281472751694240 PDF file provided: S.2-BIOLOGY-NOTES-.pdf, size: 2103765 bytes
+INFO 2025-07-04 08:26:01,244 views 69 281472751694240 PDF saved with ID: 77
+INFO 2025-07-04 08:26:01,245 views 69 281472751694240 Started PDF processing task with ID: 17af94af-c368-4e7c-bbd8-22b2a5e6e8da
+INFO 2025-07-04 08:26:01,246 tasks 21 281473575280672 Starting process_pdf_async task: task_id=17af94af-c368-4e7c-bbd8-22b2a5e6e8da, pdf_id=77, exam_style=None, num_questions=10, difficulty=easy
+INFO 2025-07-04 08:26:01,247 tasks 21 281473575280672 Step 1: Retrieving PDF object with ID 77
+INFO 2025-07-04 08:26:01,247 basehttp 69 281472751694240 "POST / HTTP/1.1" 302 0
+INFO 2025-07-04 08:26:01,250 views 69 281472751694240 Displaying progress page for task: 17af94af-c368-4e7c-bbd8-22b2a5e6e8da
+INFO 2025-07-04 08:26:01,250 basehttp 69 281472751694240 "GET /progress/17af94af-c368-4e7c-bbd8-22b2a5e6e8da/ HTTP/1.1" 200 8120
+INFO 2025-07-04 08:26:01,254 tasks 21 281473575280672 PDF object retrieved: UploadedPDF object (77)
+INFO 2025-07-04 08:26:01,255 tasks 21 281473575280672 Step 2: Extracting text from PDF
+INFO 2025-07-04 08:26:01,263 basehttp 69 281472751694240 "GET /task-status/17af94af-c368-4e7c-bbd8-22b2a5e6e8da/ HTTP/1.1" 200 108
+ERROR 2025-07-04 08:26:01,293 logging_config 21 281473575280672 PyPDF2 failed: string indices must be integers, not 'str', trying PyPDFium2
+ERROR 2025-07-04 08:26:01,320 logging_config 21 281473575280672 PyPDFium2 also failed: Failed to load page.
+ERROR 2025-07-04 08:26:01,320 logging_config 21 281473575280672 Error in quiz generation: No text could be extracted from the PDF
+INFO 2025-07-04 08:26:01,320 logging_config 21 281473575280672 Traceback (most recent call last):
+
+INFO 2025-07-04 08:26:01,320 logging_config 21 281473575280672   File "/app/core/tasks.py", line 105, in process_pdf_async
+    try:
+         
+
+ERROR 2025-07-04 08:26:01,321 logging_config 21 281473575280672   File "/app/core/quiz_generator.py", line 1637, in generate_quiz_from_pdf
+    print(f"Error in quiz generation: {e}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+INFO 2025-07-04 08:26:01,321 logging_config 21 281473575280672 Exception: No text could be extracted from the PDF
+
+ERROR 2025-07-04 08:26:01,320 tasks 21 281473575280672 Error processing PDF: No text could be extracted from the PDF
+Traceback (most recent call last):
+  File "/app/core/tasks.py", line 105, in process_pdf_async
+    try:
+         
+  File "/app/core/quiz_generator.py", line 1637, in generate_quiz_from_pdf
+    print(f"Error in quiz generation: {e}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Exception: No text could be extracted from the PDF
+INFO 2025-07-04 08:26:02,278 basehttp 69 281472751694240 "GET /task-status/17af94af-c368-4e7c-bbd8-22b2a5e6e8da/ HTTP/1.1" 200 82
+INFO 2025-07-04 08:26:31,519 basehttp 69 281472751694240 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 08:26:31,525 basehttp 69 281472741208480 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 08:26:41,409 views 69 281472741208480 Quiz form submitted
+INFO 2025-07-04 08:26:41,410 views 69 281472741208480 Form is valid. num_questions=10, difficulty=hard, exam_style=SAT, include_long_answer=False
+INFO 2025-07-04 08:26:41,411 views 69 281472741208480 Using exam style: SAT
+INFO 2025-07-04 08:26:41,426 views 69 281472741208480 Started exam style processing task with ID: d9ffd593-9af5-4a1f-acba-193ccea659b7
+INFO 2025-07-04 08:26:41,428 basehttp 69 281472741208480 "POST / HTTP/1.1" 302 0
+INFO 2025-07-04 08:26:41,428 tasks 21 281473575280672 Starting process_pdf_async task: task_id=d9ffd593-9af5-4a1f-acba-193ccea659b7, pdf_id=None, exam_style=SAT, num_questions=10, difficulty=hard
+INFO 2025-07-04 08:26:41,429 tasks 21 281473575280672 Using exam style: SAT
+INFO 2025-07-04 08:26:41,431 views 69 281472741208480 Displaying progress page for task: d9ffd593-9af5-4a1f-acba-193ccea659b7
+INFO 2025-07-04 08:26:41,432 basehttp 69 281472741208480 "GET /progress/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 8120
+INFO 2025-07-04 08:26:41,455 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:42,466 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:43,476 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:44,488 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:45,498 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:46,509 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:47,521 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:48,531 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:49,539 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:50,546 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:51,557 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:52,568 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:53,578 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:54,588 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:55,599 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:56,613 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:57,624 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:58,634 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:26:59,643 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:27:00,654 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:27:01,663 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:27:02,671 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+INFO 2025-07-04 08:27:03,680 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 107
+ERROR 2025-07-04 08:27:04,157 logging_config 21 281473575280672 Error in quiz generation: name 'TokenObjects' is not defined
+INFO 2025-07-04 08:27:04,158 logging_config 21 281473575280672 Traceback (most recent call last):
+
+INFO 2025-07-04 08:27:04,159 logging_config 21 281473575280672   File "/app/core/tasks.py", line 111, in process_pdf_async
+    update_progress(task_id, 3, total_steps, "Creating default quiz...")
+
+INFO 2025-07-04 08:27:04,159 logging_config 21 281473575280672   File "/app/core/quiz_generator.py", line 1557, in generate_quiz_from_exam_style
+
+ERROR 2025-07-04 08:27:04,160 logging_config 21 281473575280672 NameError: name 'TokenObjects' is not defined
+
+ERROR 2025-07-04 08:27:04,157 tasks 21 281473575280672 Error processing PDF: name 'TokenObjects' is not defined
+Traceback (most recent call last):
+  File "/app/core/tasks.py", line 111, in process_pdf_async
+    update_progress(task_id, 3, total_steps, "Creating default quiz...")
+  File "/app/core/quiz_generator.py", line 1557, in generate_quiz_from_exam_style
+NameError: name 'TokenObjects' is not defined
+INFO 2025-07-04 08:27:04,690 basehttp 69 281472741208480 "GET /task-status/d9ffd593-9af5-4a1f-acba-193ccea659b7/ HTTP/1.1" 200 77
+INFO 2025-07-04 08:27:27,407 basehttp 69 281472741208480 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 08:29:13,730 autoreload 69 281473300041760 /app/core/tasks.py changed, reloading.
+INFO 2025-07-04 08:29:14,241 autoreload 82 281473022128160 Watching for file changes with StatReloader
+INFO 2025-07-04 08:29:14,603 logging_config 82 281472953020832 July 04, 2025 - 08:29:14
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-04 09:50:09,234 logging_config 1 281473701867552  
+ -------------- celery@e960ea54a349 v5.3.6 (emerald-rush)
+--- ***** ----- 
+-- ******* ---- Linux-6.10.14-linuxkit-aarch64-with-glibc2.36 2025-07-04 09:50:09
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         project:0xffffb1325750
+- ** ---------- .> transport:   redis://redis:6379/0
+- ** ---------- .> results:     redis://redis:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . core.tasks.process_pdf_async
+  . project.celery.debug_task
+
+INFO 2025-07-04 09:50:10,280 autoreload 16 281473451298848 Watching for file changes with StatReloader
+INFO 2025-07-04 09:50:10,692 logging_config 16 281473380839840 July 04, 2025 - 09:50:10
+Django version 5.2.4, using settings 'project.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+INFO 2025-07-04 09:50:18,999 basehttp 16 281472902689184 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 09:50:19,011 basehttp 16 281472902689184 "GET /static/core/css/styles.css HTTP/1.1" 304 0
+INFO 2025-07-04 09:50:33,036 views 16 281472902689184 Quiz form submitted
+INFO 2025-07-04 09:50:33,037 views 16 281472902689184 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-04 09:50:33,037 views 16 281472902689184 PDF file provided: S.2-BIOLOGY-NOTES-.pdf, size: 2103765 bytes
+INFO 2025-07-04 09:50:33,055 views 16 281472902689184 PDF saved with ID: 78
+INFO 2025-07-04 09:50:33,072 views 16 281472902689184 Started PDF processing task with ID: a5d70a6e-70f6-4b23-a62b-03d6f5960980
+INFO 2025-07-04 09:50:33,075 tasks 21 281473701867552 Starting process_pdf_async task: task_id=a5d70a6e-70f6-4b23-a62b-03d6f5960980, pdf_id=78, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-04 09:50:33,075 tasks 21 281473701867552 Step 1: Retrieving PDF object with ID 78
+INFO 2025-07-04 09:50:33,076 basehttp 16 281472902689184 "POST / HTTP/1.1" 302 0
+INFO 2025-07-04 09:50:33,080 views 16 281472902689184 Displaying progress page for task: a5d70a6e-70f6-4b23-a62b-03d6f5960980
+INFO 2025-07-04 09:50:33,081 basehttp 16 281472902689184 "GET /progress/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 8120
+INFO 2025-07-04 09:50:33,086 tasks 21 281473701867552 PDF object retrieved: UploadedPDF object (78)
+INFO 2025-07-04 09:50:33,087 tasks 21 281473701867552 Step 2: Extracting text from PDF
+INFO 2025-07-04 09:50:33,094 basehttp 16 281472902689184 "GET /task-status/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 108
+ERROR 2025-07-04 09:50:33,128 logging_config 21 281473701867552 PyPDF2 failed: string indices must be integers, not 'str', trying PyPDFium2
+ERROR 2025-07-04 09:50:33,199 logging_config 21 281473701867552 PyPDFium2 also failed: Failed to load page., trying PyPDFLoader
+INFO 2025-07-04 09:50:34,141 basehttp 16 281472902689184 "GET /task-status/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:50:34,204 logging_config 21 281473701867552 Saving extracted text for PDF 78
+INFO 2025-07-04 09:50:34,211 logging_config 21 281473701867552 Successfully saved extracted text for PDF 78
+INFO 2025-07-04 09:50:35,152 basehttp 16 281472902689184 "GET /task-status/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:50:36,164 basehttp 16 281472902689184 "GET /task-status/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:50:37,178 basehttp 16 281472902689184 "GET /task-status/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:50:38,191 basehttp 16 281472902689184 "GET /task-status/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:50:39,203 basehttp 16 281472902689184 "GET /task-status/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:50:40,216 basehttp 16 281472902689184 "GET /task-status/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:50:41,228 basehttp 16 281472902689184 "GET /task-status/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:50:42,240 basehttp 16 281472902689184 "GET /task-status/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:50:43,252 basehttp 16 281472902689184 "GET /task-status/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:50:44,226 tasks 21 281473701867552 Setting final progress: {'step': 5, 'total_steps': 5, 'percent': 100, 'message': 'Quiz generation complete!', 'status': 'SUCCESS', 'quiz_id': 45}
+INFO 2025-07-04 09:50:44,261 views 16 281472902689184 Task a5d70a6e-70f6-4b23-a62b-03d6f5960980 completed successfully with quiz_id: 45
+INFO 2025-07-04 09:50:44,261 basehttp 16 281472902689184 "GET /task-status/a5d70a6e-70f6-4b23-a62b-03d6f5960980/ HTTP/1.1" 200 150
+INFO 2025-07-04 09:50:45,282 views 16 281472902689184 Displaying interactive quiz with ID: 45
+INFO 2025-07-04 09:50:45,305 basehttp 16 281472902689184 "GET /quiz/45/ HTTP/1.1" 200 30044
+INFO 2025-07-04 09:54:22,210 views 16 281472902689184 Processing quiz submission for quiz ID: 45
+INFO 2025-07-04 09:54:22,233 views 16 281472902689184 Quiz 45 score: 44.44444444444444% (4/9)
+INFO 2025-07-04 09:54:22,238 views 16 281472902689184 Weak topics identified for quiz 45: General
+INFO 2025-07-04 09:54:22,239 views 16 281472902689184 Generating feedback for low performance: 44.44444444444444%
+INFO 2025-07-04 09:54:22,243 basehttp 16 281472902689184 "POST /quiz/45/submit/ HTTP/1.1" 200 15177
+INFO 2025-07-04 09:55:20,695 basehttp 16 281472902689184 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 09:55:24,460 views 16 281472902689184 Quiz form submitted
+INFO 2025-07-04 09:55:24,461 views 16 281472902689184 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-04 09:55:24,461 views 16 281472902689184 PDF file provided: S.2-BIOLOGY-NOTES-.pdf, size: 2103765 bytes
+INFO 2025-07-04 09:55:24,476 views 16 281472902689184 PDF saved with ID: 79
+INFO 2025-07-04 09:55:24,477 views 16 281472902689184 Started PDF processing task with ID: 0043196c-d05e-404c-813a-77dfff655b13
+INFO 2025-07-04 09:55:24,477 basehttp 16 281472902689184 "POST / HTTP/1.1" 302 0
+INFO 2025-07-04 09:55:24,479 tasks 21 281473701867552 Starting process_pdf_async task: task_id=0043196c-d05e-404c-813a-77dfff655b13, pdf_id=79, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-04 09:55:24,480 tasks 21 281473701867552 Step 1: Retrieving PDF object with ID 79
+INFO 2025-07-04 09:55:24,482 views 16 281472902689184 Displaying progress page for task: 0043196c-d05e-404c-813a-77dfff655b13
+INFO 2025-07-04 09:55:24,482 basehttp 16 281472902689184 "GET /progress/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 8120
+INFO 2025-07-04 09:55:24,490 tasks 21 281473701867552 PDF object retrieved: UploadedPDF object (79)
+INFO 2025-07-04 09:55:24,490 tasks 21 281473701867552 Step 2: Extracting text from PDF
+INFO 2025-07-04 09:55:24,497 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 108
+ERROR 2025-07-04 09:55:24,525 logging_config 21 281473701867552 PyPDF2 failed: string indices must be integers, not 'str', trying PyPDFium2
+ERROR 2025-07-04 09:55:24,550 logging_config 21 281473701867552 PyPDFium2 also failed: Failed to load page., trying PyPDFLoader
+INFO 2025-07-04 09:55:25,544 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:55:25,561 logging_config 21 281473701867552 Saving extracted text for PDF 79
+INFO 2025-07-04 09:55:25,566 logging_config 21 281473701867552 Successfully saved extracted text for PDF 79
+INFO 2025-07-04 09:55:26,555 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:55:27,567 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:55:28,578 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:55:29,590 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:55:30,602 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:55:31,611 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:55:32,623 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:55:33,636 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:55:34,646 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:55:35,657 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:55:36,622 tasks 21 281473701867552 Setting final progress: {'step': 5, 'total_steps': 5, 'percent': 100, 'message': 'Quiz generation complete!', 'status': 'SUCCESS', 'quiz_id': 46}
+INFO 2025-07-04 09:55:36,668 views 16 281472902689184 Task 0043196c-d05e-404c-813a-77dfff655b13 completed successfully with quiz_id: 46
+INFO 2025-07-04 09:55:36,669 basehttp 16 281472902689184 "GET /task-status/0043196c-d05e-404c-813a-77dfff655b13/ HTTP/1.1" 200 150
+INFO 2025-07-04 09:55:37,685 views 16 281472902689184 Displaying interactive quiz with ID: 46
+INFO 2025-07-04 09:55:37,704 basehttp 16 281472902689184 "GET /quiz/46/ HTTP/1.1" 200 31713
+INFO 2025-07-04 09:56:05,883 basehttp 16 281472902689184 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 09:56:28,002 views 16 281472902689184 Quiz form submitted
+INFO 2025-07-04 09:56:28,002 views 16 281472902689184 Form is valid. num_questions=10, difficulty=hard, exam_style=, include_long_answer=False
+INFO 2025-07-04 09:56:28,003 views 16 281472902689184 PDF file provided: S.2-BIOLOGY-NOTES-.pdf, size: 2103765 bytes
+INFO 2025-07-04 09:56:28,019 views 16 281472902689184 PDF saved with ID: 80
+INFO 2025-07-04 09:56:28,020 views 16 281472902689184 Started PDF processing task with ID: 7f2314b2-587d-4110-aafd-9c605783ec32
+INFO 2025-07-04 09:56:28,021 basehttp 16 281472902689184 "POST / HTTP/1.1" 302 0
+INFO 2025-07-04 09:56:28,021 tasks 21 281473701867552 Starting process_pdf_async task: task_id=7f2314b2-587d-4110-aafd-9c605783ec32, pdf_id=80, exam_style=None, num_questions=10, difficulty=hard
+INFO 2025-07-04 09:56:28,022 tasks 21 281473701867552 Step 1: Retrieving PDF object with ID 80
+INFO 2025-07-04 09:56:28,024 views 16 281472902689184 Displaying progress page for task: 7f2314b2-587d-4110-aafd-9c605783ec32
+INFO 2025-07-04 09:56:28,024 basehttp 16 281472902689184 "GET /progress/7f2314b2-587d-4110-aafd-9c605783ec32/ HTTP/1.1" 200 8120
+INFO 2025-07-04 09:56:28,028 tasks 21 281473701867552 PDF object retrieved: UploadedPDF object (80)
+INFO 2025-07-04 09:56:28,028 tasks 21 281473701867552 Step 2: Extracting text from PDF
+INFO 2025-07-04 09:56:28,036 basehttp 16 281472902689184 "GET /task-status/7f2314b2-587d-4110-aafd-9c605783ec32/ HTTP/1.1" 200 108
+ERROR 2025-07-04 09:56:28,063 logging_config 21 281473701867552 PyPDF2 failed: string indices must be integers, not 'str', trying PyPDFium2
+ERROR 2025-07-04 09:56:28,088 logging_config 21 281473701867552 PyPDFium2 also failed: Failed to load page., trying PyPDFLoader
+INFO 2025-07-04 09:56:29,082 basehttp 16 281472902689184 "GET /task-status/7f2314b2-587d-4110-aafd-9c605783ec32/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:56:29,092 logging_config 21 281473701867552 Saving extracted text for PDF 80
+INFO 2025-07-04 09:56:29,097 logging_config 21 281473701867552 Successfully saved extracted text for PDF 80
+INFO 2025-07-04 09:56:30,091 basehttp 16 281472902689184 "GET /task-status/7f2314b2-587d-4110-aafd-9c605783ec32/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:56:31,102 basehttp 16 281472902689184 "GET /task-status/7f2314b2-587d-4110-aafd-9c605783ec32/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:56:32,118 basehttp 16 281472902689184 "GET /task-status/7f2314b2-587d-4110-aafd-9c605783ec32/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:56:33,131 basehttp 16 281472902689184 "GET /task-status/7f2314b2-587d-4110-aafd-9c605783ec32/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:56:34,142 basehttp 16 281472902689184 "GET /task-status/7f2314b2-587d-4110-aafd-9c605783ec32/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:56:35,154 basehttp 16 281472902689184 "GET /task-status/7f2314b2-587d-4110-aafd-9c605783ec32/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:56:36,165 basehttp 16 281472902689184 "GET /task-status/7f2314b2-587d-4110-aafd-9c605783ec32/ HTTP/1.1" 200 108
+INFO 2025-07-04 09:56:36,317 tasks 21 281473701867552 Setting final progress: {'step': 5, 'total_steps': 5, 'percent': 100, 'message': 'Quiz generation complete!', 'status': 'SUCCESS', 'quiz_id': 47}
+INFO 2025-07-04 09:56:37,175 views 16 281472902689184 Task 7f2314b2-587d-4110-aafd-9c605783ec32 completed successfully with quiz_id: 47
+INFO 2025-07-04 09:56:37,176 basehttp 16 281472902689184 "GET /task-status/7f2314b2-587d-4110-aafd-9c605783ec32/ HTTP/1.1" 200 150
+INFO 2025-07-04 09:56:38,193 views 16 281472902689184 Displaying interactive quiz with ID: 47
+INFO 2025-07-04 09:56:38,210 basehttp 16 281472902689184 "GET /quiz/47/ HTTP/1.1" 200 31317
+INFO 2025-07-04 09:57:12,747 views 16 281472902689184 Processing quiz submission for quiz ID: 47
+INFO 2025-07-04 09:57:12,767 views 16 281472902689184 Quiz 47 score: 40.0% (4/10)
+INFO 2025-07-04 09:57:12,773 views 16 281472902689184 Weak topics identified for quiz 47: General
+INFO 2025-07-04 09:57:12,773 views 16 281472902689184 Generating feedback for low performance: 40.0%
+INFO 2025-07-04 09:57:12,774 basehttp 16 281472902689184 "POST /quiz/47/submit/ HTTP/1.1" 200 16192
+INFO 2025-07-04 09:58:00,796 views 16 281472902689184 Displaying interactive quiz with ID: 47
+INFO 2025-07-04 09:58:00,813 basehttp 16 281472902689184 "GET /quiz/47/ HTTP/1.1" 200 31317
+INFO 2025-07-04 09:58:04,469 basehttp 16 281472902689184 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 10:00:16,697 views 16 281472902689184 Quiz form submitted
+INFO 2025-07-04 10:00:16,698 views 16 281472902689184 Form is valid. num_questions=5, difficulty=easy, exam_style=, include_long_answer=True
+INFO 2025-07-04 10:00:16,698 views 16 281472902689184 PDF file provided: S.2-BIOLOGY-NOTES-.pdf, size: 2103765 bytes
+INFO 2025-07-04 10:00:16,713 views 16 281472902689184 PDF saved with ID: 81
+INFO 2025-07-04 10:00:16,715 views 16 281472902689184 Started PDF processing task with ID: 0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de
+INFO 2025-07-04 10:00:16,715 basehttp 16 281472902689184 "POST / HTTP/1.1" 302 0
+INFO 2025-07-04 10:00:16,717 tasks 21 281473701867552 Starting process_pdf_async task: task_id=0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de, pdf_id=81, exam_style=None, num_questions=5, difficulty=easy
+INFO 2025-07-04 10:00:16,717 tasks 21 281473701867552 Step 1: Retrieving PDF object with ID 81
+INFO 2025-07-04 10:00:16,719 views 16 281472902689184 Displaying progress page for task: 0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de
+INFO 2025-07-04 10:00:16,720 basehttp 16 281472902689184 "GET /progress/0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de/ HTTP/1.1" 200 8120
+INFO 2025-07-04 10:00:16,725 tasks 21 281473701867552 PDF object retrieved: UploadedPDF object (81)
+INFO 2025-07-04 10:00:16,726 tasks 21 281473701867552 Step 2: Extracting text from PDF
+INFO 2025-07-04 10:00:16,734 basehttp 16 281472902689184 "GET /task-status/0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de/ HTTP/1.1" 200 108
+ERROR 2025-07-04 10:00:16,765 logging_config 21 281473701867552 PyPDF2 failed: string indices must be integers, not 'str', trying PyPDFium2
+ERROR 2025-07-04 10:00:16,793 logging_config 21 281473701867552 PyPDFium2 also failed: Failed to load page., trying PyPDFLoader
+INFO 2025-07-04 10:00:17,782 basehttp 16 281472902689184 "GET /task-status/0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:00:17,814 logging_config 21 281473701867552 Saving extracted text for PDF 81
+INFO 2025-07-04 10:00:17,819 logging_config 21 281473701867552 Successfully saved extracted text for PDF 81
+INFO 2025-07-04 10:00:18,792 basehttp 16 281472902689184 "GET /task-status/0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:00:19,803 basehttp 16 281472902689184 "GET /task-status/0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:00:20,814 basehttp 16 281472902689184 "GET /task-status/0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:00:21,824 basehttp 16 281472902689184 "GET /task-status/0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:00:22,835 basehttp 16 281472902689184 "GET /task-status/0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:00:23,602 tasks 21 281473701867552 Setting final progress: {'step': 5, 'total_steps': 5, 'percent': 100, 'message': 'Quiz generation complete!', 'status': 'SUCCESS', 'quiz_id': 48}
+INFO 2025-07-04 10:00:23,846 views 16 281472902689184 Task 0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de completed successfully with quiz_id: 48
+INFO 2025-07-04 10:00:23,847 basehttp 16 281472902689184 "GET /task-status/0cb44f82-8bf6-44f0-b3ad-77e7c9e0c2de/ HTTP/1.1" 200 150
+INFO 2025-07-04 10:00:24,863 views 16 281472902689184 Displaying interactive quiz with ID: 48
+INFO 2025-07-04 10:00:24,879 basehttp 16 281472902689184 "GET /quiz/48/ HTTP/1.1" 200 23474
+INFO 2025-07-04 10:00:50,703 views 16 281472902689184 Processing quiz submission for quiz ID: 48
+INFO 2025-07-04 10:00:50,721 views 16 281472902689184 Quiz 48 score: 50.0% (2/4)
+INFO 2025-07-04 10:00:50,725 views 16 281472902689184 Weak topics identified for quiz 48: General
+INFO 2025-07-04 10:00:50,725 views 16 281472902689184 Generating feedback for low performance: 50.0%
+INFO 2025-07-04 10:00:50,728 basehttp 16 281472902689184 "POST /quiz/48/submit/ HTTP/1.1" 200 9954
+INFO 2025-07-04 10:01:25,515 views 16 281472902689184 Displaying interactive quiz with ID: 48
+INFO 2025-07-04 10:01:25,530 basehttp 16 281472902689184 "GET /quiz/48/ HTTP/1.1" 200 23474
+INFO 2025-07-04 10:05:44,485 basehttp 16 281472902689184 "GET / HTTP/1.1" 200 12243
+INFO 2025-07-04 10:09:01,876 views 16 281472902689184 Quiz form submitted
+INFO 2025-07-04 10:09:01,877 views 16 281472902689184 Form is valid. num_questions=30, difficulty=hard, exam_style=, include_long_answer=True
+INFO 2025-07-04 10:09:01,877 views 16 281472902689184 PDF file provided: Final.Draft_Highway.Code_2022-1.pdf, size: 27081412 bytes
+INFO 2025-07-04 10:09:02,081 views 16 281472902689184 PDF saved with ID: 82
+INFO 2025-07-04 10:09:02,082 views 16 281472902689184 Started PDF processing task with ID: 1067656b-c5da-428e-9a86-d115b071edef
+INFO 2025-07-04 10:09:02,083 basehttp 16 281472902689184 "POST / HTTP/1.1" 302 0
+INFO 2025-07-04 10:09:02,083 tasks 21 281473701867552 Starting process_pdf_async task: task_id=1067656b-c5da-428e-9a86-d115b071edef, pdf_id=82, exam_style=None, num_questions=30, difficulty=hard
+INFO 2025-07-04 10:09:02,083 tasks 21 281473701867552 Step 1: Retrieving PDF object with ID 82
+INFO 2025-07-04 10:09:02,086 views 16 281472902689184 Displaying progress page for task: 1067656b-c5da-428e-9a86-d115b071edef
+INFO 2025-07-04 10:09:02,087 basehttp 16 281472902689184 "GET /progress/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 8120
+INFO 2025-07-04 10:09:02,087 tasks 21 281473701867552 PDF object retrieved: UploadedPDF object (82)
+INFO 2025-07-04 10:09:02,087 tasks 21 281473701867552 Step 2: Extracting text from PDF
+INFO 2025-07-04 10:09:02,113 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:02,415 logging_config 21 281473701867552 Saving extracted text for PDF 82
+INFO 2025-07-04 10:09:02,419 logging_config 21 281473701867552 Successfully saved extracted text for PDF 82
+INFO 2025-07-04 10:09:03,164 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:04,177 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:05,187 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:06,198 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:07,210 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:08,220 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:09,232 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:10,244 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:11,255 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:12,266 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:13,278 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:14,290 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:15,301 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:16,312 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:17,322 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 108
+INFO 2025-07-04 10:09:17,655 tasks 21 281473701867552 Setting final progress: {'step': 5, 'total_steps': 5, 'percent': 100, 'message': 'Quiz generation complete!', 'status': 'SUCCESS', 'quiz_id': 49}
+INFO 2025-07-04 10:09:18,332 views 16 281472902689184 Task 1067656b-c5da-428e-9a86-d115b071edef completed successfully with quiz_id: 49
+INFO 2025-07-04 10:09:18,333 basehttp 16 281472902689184 "GET /task-status/1067656b-c5da-428e-9a86-d115b071edef/ HTTP/1.1" 200 150
+INFO 2025-07-04 10:09:19,349 views 16 281472902689184 Displaying interactive quiz with ID: 49
+INFO 2025-07-04 10:09:19,367 basehttp 16 281472902689184 "GET /quiz/49/ HTTP/1.1" 200 38671
+INFO 2025-07-04 10:10:43,894 views 16 281472902689184 Processing quiz submission for quiz ID: 49
+INFO 2025-07-04 10:10:43,917 views 16 281472902689184 Quiz 49 score: 60.0% (6/10)
+INFO 2025-07-04 10:10:43,928 views 16 281472902689184 Weak topics identified for quiz 49: General
+INFO 2025-07-04 10:10:43,929 views 16 281472902689184 Generating feedback for average performance: 60.0%
+INFO 2025-07-04 10:10:43,931 basehttp 16 281472902689184 "POST /quiz/49/submit/ HTTP/1.1" 200 23074
+INFO 2025-07-04 10:16:14,370 basehttp 16 281472902689184 "GET / HTTP/1.1" 200 12243

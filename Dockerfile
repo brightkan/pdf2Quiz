@@ -31,7 +31,7 @@ RUN pip install --no-cache-dir \
 
 # Create a non-root user for development
 RUN adduser --disabled-password --gecos "" --uid 1000 appuser
-RUN mkdir -p /app/media && find /app -path "/app/venv" -prune -o -exec chown appuser:appuser {} \;
+RUN mkdir -p /app/media /app/logs && find /app -path "/app/venv" -prune -o -exec chown appuser:appuser {} \;
 
 # Copy project files
 COPY . .
@@ -51,7 +51,7 @@ RUN python manage.py collectstatic --noinput
 
 # Create a non-root user to run the application
 RUN adduser --disabled-password --gecos "" appuser
-RUN find /app -path "/app/venv" -prune -o -exec chown appuser:appuser {} \;
+RUN mkdir -p /app/logs && find /app -path "/app/venv" -prune -o -exec chown appuser:appuser {} \;
 USER appuser
 
 # Command to run the production server with gunicorn

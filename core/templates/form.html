@@ -46,9 +46,9 @@
             outline: none;
         }
         .file-name {
-            margin-top: 0.5rem;
-            font-size: 0.85rem;
-            color: var(--primary-color);
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
             display: none;
         }
         .tips-container {
@@ -69,36 +69,102 @@
         .tips-list li {
             margin-bottom: 0.5rem;
         }
+        .toggle-container {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+        .toggle-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #f5f5f5;
+            transition: background-color 0.3s;
+        }
+        .toggle-option.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+        }
+        .input-section {
+            display: none;
+        }
+        .input-section.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>PDF Quiz Generator</h1>
-            <p>Upload a PDF document and customize your quiz settings to generate tailored questions based on the content.</p>
+            <h1>Quiz Generator</h1>
+            <p>Generate tailored questions based on a PDF document or in the style of a famous exam or test.</p>
         </div>
 
         <div class="card">
             <form method="post" enctype="multipart/form-data" id="quiz-form">
                 {% csrf_token %}
 
-                {% for field in form %}
-                <div class="form-group">
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field.errors }}
+                <div class="toggle-container" id="input-toggle">
+                    <div class="toggle-option active" data-target="pdf-section">Upload PDF</div>
+                    <div class="toggle-option" data-target="exam-section">Use Exam Style</div>
+                </div>
 
-                    {% if field.name == 'pdf_file' %}
-                        {{ field }}
+                <!-- PDF Upload Section -->
+                <div class="input-section active" id="pdf-section">
+                    <div class="form-group">
+                        <label for="{{ form.pdf_file.id_for_label }}">PDF File</label>
+                        {{ form.pdf_file.errors }}
+                        {{ form.pdf_file }}
                         <div class="file-name" id="file-name"></div>
-                    {% else %}
-                        {{ field }}
-                    {% endif %}
+                        {% if form.pdf_file.help_text %}
+                        <small class="form-text text-muted">{{ form.pdf_file.help_text }}</small>
+                        {% endif %}
+                    </div>
+                </div>
 
-                    {% if field.help_text %}
-                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                <!-- Exam Style Section -->
+                <div class="input-section" id="exam-section">
+                    <div class="form-group">
+                        <label for="{{ form.exam_style.id_for_label }}">Exam Style</label>
+                        {{ form.exam_style.errors }}
+                        {{ form.exam_style }}
+                        {% if form.exam_style.help_text %}
+                        <small class="form-text text-muted">{{ form.exam_style.help_text }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Common Settings -->
+                <div class="form-group">
+                    <label for="{{ form.num_questions.id_for_label }}">Number of Questions</label>
+                    {{ form.num_questions.errors }}
+                    {{ form.num_questions }}
+                    {% if form.num_questions.help_text %}
+                    <small class="form-text text-muted">{{ form.num_questions.help_text }}</small>
                     {% endif %}
                 </div>
-                {% endfor %}
+
+                <div class="form-group">
+                    <label for="{{ form.difficulty.id_for_label }}">Difficulty</label>
+                    {{ form.difficulty.errors }}
+                    {{ form.difficulty }}
+                    {% if form.difficulty.help_text %}
+                    <small class="form-text text-muted">{{ form.difficulty.help_text }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.include_long_answer.id_for_label }}">Include Long Answer Questions</label>
+                    {{ form.include_long_answer.errors }}
+                    {{ form.include_long_answer }}
+                    {% if form.include_long_answer.help_text %}
+                    <small class="form-text text-muted">{{ form.include_long_answer.help_text }}</small>
+                    {% endif %}
+                </div>
 
                 <button type="submit" class="btn btn-primary btn-block" id="submit-btn">Generate Quiz</button>
             </form>
@@ -106,10 +172,11 @@
             <div class="tips-container">
                 <div class="tips-title">Tips for faster quiz generation:</div>
                 <ul class="tips-list">
-                    <li>Use PDFs with clear, well-formatted text for better extraction</li>
-                    <li>Smaller PDFs (under 20 pages) process more quickly</li>
-                    <li>For large documents, consider uploading specific chapters or sections</li>
-                    <li>Choose fewer questions for faster generation</li>
+                    <li><strong>PDF Upload:</strong> Use PDFs with clear, well-formatted text for better extraction</li>
+                    <li><strong>PDF Upload:</strong> Smaller PDFs (under 20 pages) process more quickly</li>
+                    <li><strong>Exam Style:</strong> Be specific with exam styles (e.g., "AP Biology 2023" instead of just "Biology")</li>
+                    <li><strong>Exam Style:</strong> Use well-known standardized tests or exams for best results</li>
+                    <li>Choose fewer questions for faster generation regardless of input method</li>
                 </ul>
             </div>
         </div>
@@ -117,7 +184,7 @@
 
     <div class="loading-overlay" id="loading-overlay">
         <div class="spinner"></div>
-        <p>Uploading PDF and preparing quiz generation...</p>
+        <p>Preparing quiz generation...</p>
         <p>You'll be redirected to the progress page shortly.</p>
     </div>
 
@@ -127,20 +194,101 @@
             const loadingOverlay = document.getElementById('loading-overlay');
             const fileInput = document.querySelector('input[type="file"]');
             const fileName = document.getElementById('file-name');
+            const examStyleInput = document.getElementById('{{ form.exam_style.id_for_label }}');
+            const toggleOptions = document.querySelectorAll('.toggle-option');
+            const pdfSection = document.getElementById('pdf-section');
+            const examSection = document.getElementById('exam-section');
+
+            // Toggle between PDF and Exam Style sections
+            toggleOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    toggleOptions.forEach(opt => opt.classList.remove('active'));
+
+                    // Add active class to clicked option
+                    this.classList.add('active');
+
+                    // Hide all sections
+                    document.querySelectorAll('.input-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+
+                    // Show the target section
+                    const targetId = this.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+
+                    // Clear the other input field
+                    if (targetId === 'pdf-section') {
+                        examStyleInput.value = '';
+                    } else {
+                        fileInput.value = '';
+                        fileName.style.display = 'none';
+                    }
+                });
+            });
 
             // Show file name when selected
             fileInput.addEventListener('change', function() {
                 if (this.files && this.files[0]) {
                     fileName.textContent = 'Selected file: ' + this.files[0].name;
                     fileName.style.display = 'block';
+
+                    // Activate PDF section if file is selected
+                    toggleOptions.forEach(opt => opt.classList.remove('active'));
+                    toggleOptions[0].classList.add('active');
+                    document.querySelectorAll('.input-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    pdfSection.classList.add('active');
+
+                    // Clear exam style input
+                    examStyleInput.value = '';
                 } else {
                     fileName.style.display = 'none';
                 }
             });
 
-            // Show loading overlay when form is submitted
-            form.addEventListener('submit', function() {
+            // Activate Exam Style section if exam style is entered
+            examStyleInput.addEventListener('input', function() {
+                if (this.value.trim() !== '') {
+                    toggleOptions.forEach(opt => opt.classList.remove('active'));
+                    toggleOptions[1].classList.add('active');
+                    document.querySelectorAll('.input-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    examSection.classList.add('active');
+
+                    // Clear file input
+                    fileInput.value = '';
+                    fileName.style.display = 'none';
+                }
+            });
+
+            // Form validation before submission
+            form.addEventListener('submit', function(event) {
+                const activeSectionId = document.querySelector('.input-section.active').id;
+
+                if (activeSectionId === 'pdf-section' && !fileInput.value) {
+                    event.preventDefault();
+                    alert('Please select a PDF file.');
+                    return;
+                }
+
+                if (activeSectionId === 'exam-section' && !examStyleInput.value.trim()) {
+                    event.preventDefault();
+                    alert('Please enter an exam style.');
+                    return;
+                }
+
                 if (form.checkValidity()) {
+                    // Update loading message based on active section
+                    const loadingMessage = document.querySelector('#loading-overlay p:first-of-type');
+                    if (activeSectionId === 'pdf-section') {
+                        loadingMessage.textContent = 'Uploading PDF and preparing quiz generation...';
+                    } else {
+                        loadingMessage.textContent = 'Preparing to generate quiz in ' + examStyleInput.value + ' style...';
+                    }
+
                     loadingOverlay.style.display = 'flex';
                 }
             });

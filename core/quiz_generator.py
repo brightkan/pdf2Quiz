@@ -108,8 +108,30 @@ def extract_text_from_pdf_fast(pdf_file, pdf_obj=None):
             # Cleanup
             os.unlink(temp_path)
         except Exception as e2:
-            print(f"PyPDFium2 also failed: {e2}")
-            text = ""
+            print(f"PyPDFium2 also failed: {e2}, trying PyPDFLoader")
+            try:
+                # Second fallback method with temporary file
+                with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_file:
+                    if hasattr(pdf_file, 'read'):
+                        pdf_file.seek(0)
+                        temp_file.write(pdf_file.read())
+                        pdf_file.seek(0)
+                    else:
+                        with open(pdf_file, 'rb') as f:
+                            temp_file.write(f.read())
+                    temp_path = temp_file.name
+
+                # Use PyPDFLoader from LangChain
+                loader = PyPDFLoader(temp_path)
+                pages = loader.load()
+                text = " ".join([page.page_content for page in pages])
+
+                # Cleanup
+                os.unlink(temp_path)
+            except Exception as e3:
+                print(f"All PDF extraction methods failed: {e3}")
+                # Return a placeholder text instead of an empty string
+                text = "This PDF document appears to be empty or contains only images without text. Please try a different PDF with extractable text content."
 
     # Cache the result
     if pdf_obj and text:
@@ -288,11 +310,26 @@ def parse_quiz_content_fast(content):
     """Optimized quiz parsing with pre-compiled regex."""
     questions = []
 
+    # Handle empty or invalid content
+    if not content or not isinstance(content, str):
+        print(f"Warning: Invalid content provided to parse_quiz_content_fast: {type(content)}")
+        # Return a default question instead of an empty list
+        return [{
+            'text': 'No questions could be generated from the PDF content. Please try again with a different PDF.',
+            'options': {'a': 'Try again', 'b': 'Use a different PDF', 'c': 'Contact support', 'd': 'Read the documentation'},
+            'correct_option': 'b',
+            'topic': 'Error',
+            'question_type': 'multiple_choice',
+            'explanation': 'The system was unable to extract meaningful text from the PDF or generate questions from it.'
+        }]
+
     # Pre-compile regex patterns
     question_split_pattern = re.compile(r'\n\s*\d+\.\s+')
     option_pattern = re.compile(r'^([a-dA-D])[\.\)]\s+(.+)$')
     correct_pattern = re.compile(r'^correct\s+answer\s*:\s*([a-dA-D])', re.IGNORECASE)
-    topic_pattern = re.compile(r'^topic\s*:\s*(.+)$', re.IGNORECASE)
+    topic_pattern = re.compile(r'^topic\s*:\s*(.+)')
+    explanation_pattern = re.compile(r'^detailed\s+explanation\s*:\s*(.+)', re.IGNORECASE)
+    marks_pattern = re.compile(r'^marks\s*:\s*(\d+)')
 
     # Split into questions
     question_blocks = question_split_pattern.split(content)
@@ -309,6 +346,9 @@ def parse_quiz_content_fast(content):
         options = {}
         correct_option = None
         topic = None
+        explanation = None
+        marks = None
+        is_long_answer = True  # Assume long answer until we find options
 
         # Process lines efficiently
         for line in lines[1:]:
@@ -319,6 +359,7 @@ def parse_quiz_content_fast(content):
             # Check for option
             option_match = option_pattern.match(line)
             if option_match:
+                is_long_answer = False  # Found options, so not a long answer question
                 option_letter = option_match.group(1).lower()
                 option_text = option_match.group(2).strip()
 
@@ -332,6 +373,7 @@ def parse_quiz_content_fast(content):
             # Check for correct answer
             correct_match = correct_pattern.match(line)
             if correct_match:
+                is_long_answer = False  # Found correct answer, so not a long answer question
                 correct_option = correct_match.group(1).lower()
                 continue
 
@@ -339,9 +381,22 @@ def parse_quiz_content_fast(content):
             topic_match = topic_pattern.match(line)
             if topic_match:
                 topic = topic_match.group(1).strip()
+                continue
 
-        # Add well-formed questions
-        if question_text and len(options) == 4 and correct_option:
+            # Check for explanation
+            explanation_match = explanation_pattern.match(line)
+            if explanation_match:
+                explanation = explanation_match.group(1).strip()
+                continue
+
+            # Check for marks
+            marks_match = marks_pattern.match(line)
+            if marks_match:
+                marks = int(marks_match.group(1).strip())
+                continue
+
+        # Add well-formed multiple-choice questions
+        if question_text and not is_long_answer and len(options) == 4 and correct_option:
             questions.append({
                 'text': question_text,
                 'options': {
@@ -351,15 +406,236 @@ def parse_quiz_content_fast(content):
                     'd': options.get('d', '')
                 },
                 'correct_option': correct_option,
-                'topic': topic
+                'topic': topic or 'General',
+                'question_type': 'multiple_choice',
+                'explanation': explanation,
+                'marks': marks
+            })
+        # Add long-answer questions
+        elif question_text and is_long_answer:
+            questions.append({
+                'text': question_text,
+                'options': {
+                    'a': '',
+                    'b': '',
+                    'c': '',
+                    'd': ''
+                },
+                'correct_option': '',
+                'topic': topic or 'General',
+                'question_type': 'long_answer',
+                'explanation': explanation,
+                'marks': marks
             })
 
-    return questions
+    # Validate questions before returning
+    validated_questions = []
+    for q in questions:
+        # Ensure all required fields have valid values
+        if not q.get('text'):
+            continue
+
+        # Ensure options are valid
+        options = q.get('options', {})
+        if not isinstance(options, dict):
+            options = {'a': '', 'b': '', 'c': '', 'd': ''}
+
+        # Create a validated question with default values for missing fields
+        validated_question = {
+            'text': q.get('text', 'Default question text'),
+            'options': {
+                'a': options.get('a', ''),
+                'b': options.get('b', ''),
+                'c': options.get('c', ''),
+                'd': options.get('d', '')
+            },
+            'correct_option': q.get('correct_option', 'a'),
+            'topic': q.get('topic', 'General'),
+            'question_type': q.get('question_type', 'multiple_choice'),
+            'explanation': q.get('explanation', ''),
+            'marks': q.get('marks', 1)
+        }
+        validated_questions.append(validated_question)
+
+    # If no valid questions were found, return a default question
+    if not validated_questions:
+        return [{
+            'text': 'Default question when parsing fails',
+            'options': {'a': 'Option A', 'b': 'Option B', 'c': 'Option C', 'd': 'Option D'},
+            'correct_option': 'a',
+            'topic': 'General',
+            'question_type': 'multiple_choice',
+            'explanation': '',
+            'marks': 1
+        }]
+
+    return validated_questions
 
 
-def generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=None):
+def generate_quiz_from_exam_style(exam_style, num_questions, difficulty, task_id=None, include_long_answer=False):
+    """
+    Generate a quiz based on a famous exam, test, or book style without requiring a PDF.
+
+    Args:
+        exam_style: Style of a famous exam, test, or book to mimic
+        num_questions: Number of questions to generate
+        difficulty: Difficulty level of the questions
+        task_id: Optional task ID for progress tracking
+        include_long_answer: Whether to include long-answer questions
+    """
+    def update_progress_fast(step, message):
+        if task_id:
+            try:
+                from .tasks import update_progress
+                update_progress(task_id, step, 3, message)
+            except:
+                pass
+
+    try:
+        # Step 1: Prepare for generation
+        update_progress_fast(1, "Preparing to generate questions...")
+
+        # Step 2: Generate quiz with AI
+        update_progress_fast(2, "Generating quiz with AI...")
+
+        # Use faster LLM settings
+        llm = ChatOpenAI(
+            temperature=0.3,  # Lower temperature for faster, more focused responses
+            max_tokens=1500,  # Limit response length
+            model_name="gpt-3.5-turbo"  # Use faster model
+        )
+
+        # Enhanced prompt for exam style
+        prompt_template = """
+Generate {num_questions} {difficulty} questions that match the exact style and form of {exam_style} questions.
+These questions should be designed to be harder than typical {exam_style} questions,
+testing a deep understanding of the subject matter and specifically targeting common areas of confusion or misconception.
+The questions should be realistic and representative of the actual {exam_style} format, difficulty, and content areas.
+
+For each question, provide:
+1. The question text.
+2. Four multiple-choice options (a, b, c, d).
+3. Indicate the correct option.
+4. A 'Topic:' for the question.
+5. A 'Detailed Explanation:' that thoroughly explains why the correct answer is correct and why the incorrect answers are incorrect. This explanation should also address common misconceptions related to the question.
+6. A 'Marks:' section indicating the marks for the question (e.g., 'Marks: 2').
+
+Example format for a multiple-choice question:
+1. Question Text
+a) Option A
+b) Option B (correct)
+c) Option C
+d) Option D
+Topic: Relevant Topic
+Detailed Explanation: Thorough explanation of correct and incorrect options, addressing misconceptions.
+Marks: Number
+"""
+
+        if include_long_answer:
+            long_answer_count = max(1, num_questions // 3)
+            multiple_choice_count = num_questions - long_answer_count
+
+            prompt_template += """
+Format the first {multiple_choice_count} questions as multiple-choice:
+1. Question
+a) Option
+b) Option
+c) Option (correct)
+d) Option
+
+Format the remaining {long_answer_count} questions as long-answer questions that require detailed responses:
+{multiple_choice_count + 1}. Question that requires a detailed explanation
+Topic: Topic
+
+Be concise and test key concepts. For long-answer questions, focus on topics that require detailed explanations, analysis, or evaluation.
+"""
+        else:
+            prompt_template += """
+Format each question as:
+1. Question
+a) Option
+b) Option
+c) Option (correct)
+d) Option
+
+Be concise and test key concepts.
+"""
+
+        prompt = ChatPromptTemplate.from_template(prompt_template)
+
+        # Generate quiz
+        with get_openai_callback() as cb:
+            response = llm(prompt.format_messages(
+                num_questions=num_questions,
+                difficulty=difficulty,
+                exam_style=exam_style
+            ))
+
+            # Save token usage
+            token_usage = TokenObjects.objects.create(
+                prompt_tokens=cb.prompt_tokens,
+                completion_tokens=cb.completion_tokens,
+                total_tokens=cb.total_tokens
+            )
+
+        # Step 3: Parse and save quiz
+        update_progress_fast(3, "Finalizing quiz...")
+        parsed_questions = parse_quiz_content_fast(response.content)
+
+        # Create quiz object without PDF
+        quiz = Quiz.objects.create(
+            pdf=None,
+            num_questions=num_questions,
+            difficulty=difficulty,
+            exam_style=exam_style
+        )
+
+        # Bulk create questions for better performance
+        question_objects = []
+        for q_data in parsed_questions:
+            question_objects.append(Question(
+                quiz=quiz,
+                text=q_data['text'],
+                question_type=q_data.get('question_type', 'multiple_choice'),
+                option_a=q_data['options']['a'],
+                option_b=q_data['options']['b'],
+                option_c=q_data['options']['c'],
+                option_d=q_data['options']['d'],
+                correct_option=q_data['correct_option'],
+                topic=q_data['topic'],
+                explanation=q_data.get('explanation'),
+                marks=q_data.get('marks')
+            ))
+
+        # Bulk insert
+        Question.objects.bulk_create(question_objects)
+
+        # Cache result
+        cache_key = f"quiz_result_{quiz.id}"
+        cache_data = json.dumps([quiz.id, response.content, token_usage.id])
+        cache.set(cache_key, cache_data, timeout=86400)
+
+        return {
+            'quiz': quiz,
+            'content': response.content,
+            'token_usage': token_usage
+        }
+
+    except Exception as e:
+        print(f"Error in quiz generation: {e}")
+        raise
+
+def generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=None, include_long_answer=False, exam_style=None):
     """
     Ultra-fast quiz generation with optimized processing pipeline.
+
+    Args:
+        pdf_obj: The UploadedPDF object
+        num_questions: Number of questions to generate
+        difficulty: Difficulty level of the questions
+        task_id: Optional task ID for progress tracking
+        include_long_answer: Whether to include long-answer questions
+        exam_style: Optional style of a famous exam, test, or book to mimic
     """
 
     def update_progress_fast(step, message):
@@ -424,11 +700,43 @@ def generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=None):
         )
 
         # Streamlined prompt
-        prompt = ChatPromptTemplate.from_template("""
-Generate {n} {difficulty} multiple-choice questions from this content:
+        prompt_template = """
+Generate {n} {difficulty} questions from this content:
 
 {content}
 
+"""
+
+        # Add exam style instruction if provided
+        if exam_style:
+            prompt_template = """
+Generate {n} {difficulty} questions from this content that match the exact style and form of """ + exam_style + """ questions:
+
+{content}
+
+"""
+
+        if include_long_answer:
+            # Determine how many long-answer questions to include (about 1/3 of total, at least 1)
+            long_answer_count = max(1, num_questions // 3)
+            multiple_choice_count = num_questions - long_answer_count
+
+            prompt_template += f"""
+Format the first {multiple_choice_count} questions as multiple-choice:
+1. [Question]
+a) [Option]
+b) [Option]
+c) [Option] (correct)
+d) [Option]
+
+Format the remaining {long_answer_count} questions as long-answer questions that require detailed responses:
+{multiple_choice_count + 1}. [Question that requires a detailed explanation]
+Topic: [Topic]
+
+Be concise and test key concepts. For long-answer questions, focus on topics that require detailed explanations, analysis, or evaluation.
+"""
+        else:
+            prompt_template += """
 Format each question as:
 1. [Question]
 a) [Option]
@@ -437,7 +745,9 @@ c) [Option] (correct)
 d) [Option]
 
 Be concise and test key concepts.
-""")
+"""
+
+        prompt = ChatPromptTemplate.from_template(prompt_template)
 
         # Generate quiz
         with get_openai_callback() as cb:
@@ -461,7 +771,8 @@ Be concise and test key concepts.
         quiz = Quiz.objects.create(
             pdf=pdf_obj,
             num_questions=num_questions,
-            difficulty=difficulty
+            difficulty=difficulty,
+            exam_style=exam_style
         )
 
         # Bulk create questions for better performance
@@ -470,6 +781,1019 @@ Be concise and test key concepts.
             question_objects.append(Question(
                 quiz=quiz,
                 text=q_data['text'],
+                question_type=q_data.get('question_type', 'multiple_choice'),
+                option_a=q_data['options']['a'],
+                option_b=q_data['options']['b'],
+                option_c=q_data['options']['c'],
+                option_d=q_data['options']['d'],
+                correct_option=q_data['correct_option'],
+                topic=q_data['topic']
+            ))
+
+        # Bulk insert
+        Question.objects.bulk_create(question_objects)
+
+        # Cache result
+        cache_key = f"quiz_result_{quiz.id}"
+        cache_data = json.dumps([quiz.id, response.content, token_usage.id])
+        cache.set(cache_key, cache_data, timeout=86400)
+
+        return {
+            'quiz': quiz,
+            'content': response.content,
+            'token_usage': token_usage
+        }
+
+    except Exception as e:
+        print(f"Error in quiz generation: {e}")
+        raise
+    explanation_pattern = re.compile(r'^detailed\s+explanation\s*:\s*(.+)', re.IGNORECASE)
+
+
+def generate_quiz_from_exam_style(exam_style, num_questions, difficulty, task_id=None, include_long_answer=False):
+    """
+    Generate a quiz based on a famous exam, test, or book style without requiring a PDF.
+
+    Args:
+        exam_style: Style of a famous exam, test, or book to mimic
+        num_questions: Number of questions to generate
+        difficulty: Difficulty level of the questions
+        task_id: Optional task ID for progress tracking
+        include_long_answer: Whether to include long-answer questions
+    """
+    def update_progress_fast(step, message):
+        if task_id:
+            try:
+                from .tasks import update_progress
+                update_progress(task_id, step, 3, message)
+            except:
+                pass
+
+    try:
+        # Step 1: Prepare for generation
+        update_progress_fast(1, "Preparing to generate questions...")
+
+        # Step 2: Generate quiz with AI
+        update_progress_fast(2, "Generating quiz with AI...")
+
+        # Use faster LLM settings
+        llm = ChatOpenAI(
+            temperature=0.3,  # Lower temperature for faster, more focused responses
+            max_tokens=1500,  # Limit response length
+            model_name="gpt-3.5-turbo"  # Use faster model
+        )
+
+        # Enhanced prompt for exam style
+        prompt_template = """
+Generate {num_questions} {difficulty} questions that match the exact style and form of {exam_style} questions.
+These questions should be designed to be harder than typical {exam_style} questions,
+testing a deep understanding of the subject matter and specifically targeting common areas of confusion or misconception.
+The questions should be realistic and representative of the actual {exam_style} format, difficulty, and content areas.
+
+For each question, provide:
+1. The question text.
+2. Four multiple-choice options (a, b, c, d).
+3. Indicate the correct option.
+4. A 'Topic:' for the question.
+5. A 'Detailed Explanation:' that thoroughly explains why the correct answer is correct and why the incorrect answers are incorrect. This explanation should also address common misconceptions related to the question.
+6. A 'Marks:' section indicating the marks for the question (e.g., 'Marks: 2').
+
+Example format for a multiple-choice question:
+1. Question Text
+a) Option A
+b) Option B (correct)
+c) Option C
+d) Option D
+Topic: Relevant Topic
+Detailed Explanation: Thorough explanation of correct and incorrect options, addressing misconceptions.
+Marks: Number
+"""
+
+        if include_long_answer:
+            long_answer_count = max(1, num_questions // 3)
+            multiple_choice_count = num_questions - long_answer_count
+
+            prompt_template += """
+Format the first {multiple_choice_count} questions as multiple-choice:
+1. Question
+a) Option
+b) Option
+c) Option (correct)
+d) Option
+
+Format the remaining {long_answer_count} questions as long-answer questions that require detailed responses:
+{multiple_choice_count + 1}. Question that requires a detailed explanation
+Topic: Topic
+
+Be concise and test key concepts. For long-answer questions, focus on topics that require detailed explanations, analysis, or evaluation.
+"""
+        else:
+            prompt_template += """
+Format each question as:
+1. Question
+a) Option
+b) Option
+c) Option (correct)
+d) Option
+
+Be concise and test key concepts.
+"""
+
+        prompt = ChatPromptTemplate.from_template(prompt_template)
+
+        # Generate quiz
+        with get_openai_callback() as cb:
+            response = llm(prompt.format_messages(
+                num_questions=num_questions,
+                difficulty=difficulty,
+                exam_style=exam_style
+            ))
+
+            # Save token usage
+            token_usage = TokenObjects.objects.create(
+                prompt_tokens=cb.prompt_tokens,
+                completion_tokens=cb.completion_tokens,
+                total_tokens=cb.total_tokens
+            )
+
+        # Step 3: Parse and save quiz
+        update_progress_fast(3, "Finalizing quiz...")
+        parsed_questions = parse_quiz_content_fast(response.content)
+
+        # Create quiz object without PDF
+        quiz = Quiz.objects.create(
+            pdf=None,
+            num_questions=num_questions,
+            difficulty=difficulty,
+            exam_style=exam_style
+        )
+
+        # Bulk create questions for better performance
+        question_objects = []
+        for q_data in parsed_questions:
+            question_objects.append(Question(
+                quiz=quiz,
+                text=q_data['text'],
+                question_type=q_data.get('question_type', 'multiple_choice'),
+                option_a=q_data['options']['a'],
+                option_b=q_data['options']['b'],
+                option_c=q_data['options']['c'],
+                option_d=q_data['options']['d'],
+                correct_option=q_data['correct_option'],
+                topic=q_data['topic'],
+                explanation=q_data.get('explanation'),
+                marks=q_data.get('marks')
+            ))
+
+        # Bulk insert
+        Question.objects.bulk_create(question_objects)
+
+        # Cache result
+        cache_key = f"quiz_result_{quiz.id}"
+        cache_data = json.dumps([quiz.id, response.content, token_usage.id])
+        cache.set(cache_key, cache_data, timeout=86400)
+
+        return {
+            'quiz': quiz,
+            'content': response.content,
+            'token_usage': token_usage
+        }
+
+    except Exception as e:
+        print(f"Error in quiz generation: {e}")
+        raise
+
+def generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=None, include_long_answer=False, exam_style=None):
+    """
+    Ultra-fast quiz generation with optimized processing pipeline.
+
+    Args:
+        pdf_obj: The UploadedPDF object
+        num_questions: Number of questions to generate
+        difficulty: Difficulty level of the questions
+        task_id: Optional task ID for progress tracking
+        include_long_answer: Whether to include long-answer questions
+        exam_style: Optional style of a famous exam, test, or book to mimic
+    """
+
+    def update_progress_fast(step, message):
+        if task_id:
+            try:
+                from .tasks import update_progress
+                update_progress(task_id, step, 5, message)
+            except:
+                pass
+
+    try:
+        # Step 1: Extract text (with caching)
+        update_progress_fast(1, "Extracting text from PDF...")
+        full_text = extract_text_from_pdf_fast(pdf_obj.file, pdf_obj)
+
+        if not full_text.strip():
+            raise Exception("No text could be extracted from the PDF")
+
+        # Step 2: Smart chunking based on text size
+        update_progress_fast(2, "Processing text...")
+        text_length = len(full_text)
+
+        if text_length > 500000:  # Large PDF
+            chunk_size = 2000
+            overlap = 300
+            num_chunks_to_use = min(8, num_questions * 2)
+        else:  # Normal PDF
+            chunk_size = 1000
+            overlap = 200
+            num_chunks_to_use = min(5, num_questions)
+
+        # Fast chunking
+        chunks = chunk_text_fast(full_text, chunk_size, overlap)
+
+        # Step 3: Store chunks efficiently
+        update_progress_fast(3, "Storing chunks...")
+        chunks_dir = store_text_chunks_fast(chunks, pdf_obj.id, task_id)
+
+        # Step 4: Find relevant content
+        update_progress_fast(4, "Finding relevant content...")
+        query = f"Generate {num_questions} {difficulty} questions main topics concepts"
+        relevant_chunks = retrieve_relevant_chunks_fast(query, pdf_obj.id, num_chunks_to_use)
+
+        # Prepare content for AI
+        content_parts = [chunk for chunk, score in relevant_chunks if score > 0]
+        if not content_parts:
+            content_parts = [chunk for chunk, score in relevant_chunks[:3]]
+
+        # Limit content size for faster processing
+        optimized_content = "\n\n".join(content_parts)
+        if len(optimized_content) > 4000:
+            optimized_content = optimized_content[:4000]
+
+        # Step 5: Generate quiz with AI
+        update_progress_fast(5, "Generating quiz with AI...")
+
+        # Use faster LLM settings
+        llm = ChatOpenAI(
+            temperature=0.3,  # Lower temperature for faster, more focused responses
+            max_tokens=1500,  # Limit response length
+            model_name="gpt-3.5-turbo"  # Use faster model
+        )
+
+        # Streamlined prompt
+        prompt_template = """
+Generate {n} {difficulty} questions from this content:
+
+{content}
+
+"""
+
+        # Add exam style instruction if provided
+        if exam_style:
+            prompt_template = """
+Generate {n} {difficulty} questions from this content that match the exact style and form of """ + exam_style + """ questions:
+
+{content}
+
+"""
+
+        if include_long_answer:
+            # Determine how many long-answer questions to include (about 1/3 of total, at least 1)
+            long_answer_count = max(1, num_questions // 3)
+            multiple_choice_count = num_questions - long_answer_count
+
+            prompt_template += f"""
+Format the first {multiple_choice_count} questions as multiple-choice:
+1. [Question]
+a) [Option]
+b) [Option]
+c) [Option] (correct)
+d) [Option]
+
+Format the remaining {long_answer_count} questions as long-answer questions that require detailed responses:
+{multiple_choice_count + 1}. [Question that requires a detailed explanation]
+Topic: [Topic]
+
+Be concise and test key concepts. For long-answer questions, focus on topics that require detailed explanations, analysis, or evaluation.
+"""
+        else:
+            prompt_template += """
+Format each question as:
+1. [Question]
+a) [Option]
+b) [Option]
+c) [Option] (correct)
+d) [Option]
+
+Be concise and test key concepts.
+"""
+
+        prompt = ChatPromptTemplate.from_template(prompt_template)
+
+        # Generate quiz
+        with get_openai_callback() as cb:
+            response = llm(prompt.format_messages(
+                content=optimized_content,
+                n=num_questions,
+                difficulty=difficulty
+            ))
+
+            # Save token usage
+            token_usage = TokenUsage.objects.create(
+                prompt_tokens=cb.prompt_tokens,
+                completion_tokens=cb.completion_tokens,
+                total_tokens=cb.total_tokens
+            )
+
+        # Parse and save quiz
+        parsed_questions = parse_quiz_content_fast(response.content)
+
+        # Create quiz object
+        quiz = Quiz.objects.create(
+            pdf=pdf_obj,
+            num_questions=num_questions,
+            difficulty=difficulty,
+            exam_style=exam_style
+        )
+
+        # Bulk create questions for better performance
+        question_objects = []
+        for q_data in parsed_questions:
+            question_objects.append(Question(
+                quiz=quiz,
+                text=q_data['text'],
+                question_type=q_data.get('question_type', 'multiple_choice'),
+                option_a=q_data['options']['a'],
+                option_b=q_data['options']['b'],
+                option_c=q_data['options']['c'],
+                option_d=q_data['options']['d'],
+                correct_option=q_data['correct_option'],
+                topic=q_data['topic']
+            ))
+
+        # Bulk insert
+        Question.objects.bulk_create(question_objects)
+
+        # Cache result
+        cache_key = f"quiz_result_{quiz.id}"
+        cache_data = json.dumps([quiz.id, response.content, token_usage.id])
+        cache.set(cache_key, cache_data, timeout=86400)
+
+        return {
+            'quiz': quiz,
+            'content': response.content,
+            'token_usage': token_usage
+        }
+
+    except Exception as e:
+        print(f"Error in quiz generation: {e}")
+        raise
+
+
+def generate_quiz_from_exam_style(exam_style, num_questions, difficulty, task_id=None, include_long_answer=False):
+    """
+    Generate a quiz based on a famous exam, test, or book style without requiring a PDF.
+
+    Args:
+        exam_style: Style of a famous exam, test, or book to mimic
+        num_questions: Number of questions to generate
+        difficulty: Difficulty level of the questions
+        task_id: Optional task ID for progress tracking
+        include_long_answer: Whether to include long-answer questions
+    """
+    def update_progress_fast(step, message):
+        if task_id:
+            try:
+                from .tasks import update_progress
+                update_progress(task_id, step, 3, message)
+            except:
+                pass
+
+    try:
+        # Step 1: Prepare for generation
+        update_progress_fast(1, "Preparing to generate questions...")
+
+        # Step 2: Generate quiz with AI
+        update_progress_fast(2, "Generating quiz with AI...")
+
+        # Use faster LLM settings
+        llm = ChatOpenAI(
+            temperature=0.3,  # Lower temperature for faster, more focused responses
+            max_tokens=1500,  # Limit response length
+            model_name="gpt-3.5-turbo"  # Use faster model
+        )
+
+        # Enhanced prompt for exam style
+        prompt_template = """
+Generate {num_questions} {difficulty} questions that match the exact style and form of {exam_style} questions.
+These questions should be designed to be harder than typical {exam_style} questions,
+testing a deep understanding of the subject matter and specifically targeting common areas of confusion or misconception.
+The questions should be realistic and representative of the actual {exam_style} format, difficulty, and content areas.
+
+For each question, provide:
+1. The question text.
+2. Four multiple-choice options (a, b, c, d).
+3. Indicate the correct option.
+4. A 'Topic:' for the question.
+5. A 'Detailed Explanation:' that thoroughly explains why the correct answer is correct and why the incorrect answers are incorrect. This explanation should also address common misconceptions related to the question.
+6. A 'Marks:' section indicating the marks for the question (e.g., 'Marks: 2').
+
+Example format for a multiple-choice question:
+1. Question Text
+a) Option A
+b) Option B (correct)
+c) Option C
+d) Option D
+Topic: Relevant Topic
+Detailed Explanation: Thorough explanation of correct and incorrect options, addressing misconceptions.
+Marks: Number
+"""
+
+        if include_long_answer:
+            long_answer_count = max(1, num_questions // 3)
+            multiple_choice_count = num_questions - long_answer_count
+
+            prompt_template += """
+Format the first {multiple_choice_count} questions as multiple-choice:
+1. Question
+a) Option
+b) Option
+c) Option (correct)
+d) Option
+
+Format the remaining {long_answer_count} questions as long-answer questions that require detailed responses:
+{multiple_choice_count + 1}. Question that requires a detailed explanation
+Topic: Topic
+
+Be concise and test key concepts. For long-answer questions, focus on topics that require detailed explanations, analysis, or evaluation.
+"""
+        else:
+            prompt_template += """
+Format each question as:
+1. Question
+a) Option
+b) Option
+c) Option (correct)
+d) Option
+
+Be concise and test key concepts.
+"""
+
+        prompt = ChatPromptTemplate.from_template(prompt_template)
+
+        # Generate quiz
+        with get_openai_callback() as cb:
+            response = llm(prompt.format_messages(
+                num_questions=num_questions,
+                difficulty=difficulty,
+                exam_style=exam_style
+            ))
+
+            # Save token usage
+            token_usage = TokenObjects.objects.create(
+                prompt_tokens=cb.prompt_tokens,
+                completion_tokens=cb.completion_tokens,
+                total_tokens=cb.total_tokens
+            )
+
+        # Step 3: Parse and save quiz
+        update_progress_fast(3, "Finalizing quiz...")
+        parsed_questions = parse_quiz_content_fast(response.content)
+
+        # Create quiz object without PDF
+        quiz = Quiz.objects.create(
+            pdf=None,
+            num_questions=num_questions,
+            difficulty=difficulty,
+            exam_style=exam_style
+        )
+
+        # Bulk create questions for better performance
+        question_objects = []
+        for q_data in parsed_questions:
+            question_objects.append(Question(
+                quiz=quiz,
+                text=q_data['text'],
+                question_type=q_data.get('question_type', 'multiple_choice'),
+                option_a=q_data['options']['a'],
+                option_b=q_data['options']['b'],
+                option_c=q_data['options']['c'],
+                option_d=q_data['options']['d'],
+                correct_option=q_data['correct_option'],
+                topic=q_data['topic'],
+                explanation=q_data.get('explanation'),
+                marks=q_data.get('marks')
+            ))
+
+        # Bulk insert
+        Question.objects.bulk_create(question_objects)
+
+        # Cache result
+        cache_key = f"quiz_result_{quiz.id}"
+        cache_data = json.dumps([quiz.id, response.content, token_usage.id])
+        cache.set(cache_key, cache_data, timeout=86400)
+
+        return {
+            'quiz': quiz,
+            'content': response.content,
+            'token_usage': token_usage
+        }
+
+    except Exception as e:
+        print(f"Error in quiz generation: {e}")
+        raise
+
+def generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=None, include_long_answer=False, exam_style=None):
+    """
+    Ultra-fast quiz generation with optimized processing pipeline.
+
+    Args:
+        pdf_obj: The UploadedPDF object
+        num_questions: Number of questions to generate
+        difficulty: Difficulty level of the questions
+        task_id: Optional task ID for progress tracking
+        include_long_answer: Whether to include long-answer questions
+        exam_style: Optional style of a famous exam, test, or book to mimic
+    """
+
+    def update_progress_fast(step, message):
+        if task_id:
+            try:
+                from .tasks import update_progress
+                update_progress(task_id, step, 5, message)
+            except:
+                pass
+
+    try:
+        # Step 1: Extract text (with caching)
+        update_progress_fast(1, "Extracting text from PDF...")
+        full_text = extract_text_from_pdf_fast(pdf_obj.file, pdf_obj)
+
+        if not full_text.strip():
+            raise Exception("No text could be extracted from the PDF")
+
+        # Step 2: Smart chunking based on text size
+        update_progress_fast(2, "Processing text...")
+        text_length = len(full_text)
+
+        if text_length > 500000:  # Large PDF
+            chunk_size = 2000
+            overlap = 300
+            num_chunks_to_use = min(8, num_questions * 2)
+        else:  # Normal PDF
+            chunk_size = 1000
+            overlap = 200
+            num_chunks_to_use = min(5, num_questions)
+
+        # Fast chunking
+        chunks = chunk_text_fast(full_text, chunk_size, overlap)
+
+        # Step 3: Store chunks efficiently
+        update_progress_fast(3, "Storing chunks...")
+        chunks_dir = store_text_chunks_fast(chunks, pdf_obj.id, task_id)
+
+        # Step 4: Find relevant content
+        update_progress_fast(4, "Finding relevant content...")
+        query = f"Generate {num_questions} {difficulty} questions main topics concepts"
+        relevant_chunks = retrieve_relevant_chunks_fast(query, pdf_obj.id, num_chunks_to_use)
+
+        # Prepare content for AI
+        content_parts = [chunk for chunk, score in relevant_chunks if score > 0]
+        if not content_parts:
+            content_parts = [chunk for chunk, score in relevant_chunks[:3]]
+
+        # Limit content size for faster processing
+        optimized_content = "\n\n".join(content_parts)
+        if len(optimized_content) > 4000:
+            optimized_content = optimized_content[:4000]
+
+        # Step 5: Generate quiz with AI
+        update_progress_fast(5, "Generating quiz with AI...")
+
+        # Use faster LLM settings
+        llm = ChatOpenAI(
+            temperature=0.3,  # Lower temperature for faster, more focused responses
+            max_tokens=1500,  # Limit response length
+            model_name="gpt-3.5-turbo"  # Use faster model
+        )
+
+        # Streamlined prompt
+        prompt_template = """
+Generate {n} {difficulty} questions from this content:
+
+{content}
+
+"""
+
+        # Add exam style instruction if provided
+        if exam_style:
+            prompt_template = """
+Generate {n} {difficulty} questions from this content that match the exact style and form of """ + exam_style + """ questions:
+
+{content}
+
+"""
+
+        if include_long_answer:
+            # Determine how many long-answer questions to include (about 1/3 of total, at least 1)
+            long_answer_count = max(1, num_questions // 3)
+            multiple_choice_count = num_questions - long_answer_count
+
+            prompt_template += f"""
+Format the first {multiple_choice_count} questions as multiple-choice:
+1. [Question]
+a) [Option]
+b) [Option]
+c) [Option] (correct)
+d) [Option]
+
+Format the remaining {long_answer_count} questions as long-answer questions that require detailed responses:
+{multiple_choice_count + 1}. [Question that requires a detailed explanation]
+Topic: [Topic]
+
+Be concise and test key concepts. For long-answer questions, focus on topics that require detailed explanations, analysis, or evaluation.
+"""
+        else:
+            prompt_template += """
+Format each question as:
+1. [Question]
+a) [Option]
+b) [Option]
+c) [Option] (correct)
+d) [Option]
+
+Be concise and test key concepts.
+"""
+
+        prompt = ChatPromptTemplate.from_template(prompt_template)
+
+        # Generate quiz
+        with get_openai_callback() as cb:
+            response = llm(prompt.format_messages(
+                content=optimized_content,
+                n=num_questions,
+                difficulty=difficulty
+            ))
+
+            # Save token usage
+            token_usage = TokenUsage.objects.create(
+                prompt_tokens=cb.prompt_tokens,
+                completion_tokens=cb.completion_tokens,
+                total_tokens=cb.total_tokens
+            )
+
+        # Parse and save quiz
+        parsed_questions = parse_quiz_content_fast(response.content)
+
+        # Create quiz object
+        quiz = Quiz.objects.create(
+            pdf=pdf_obj,
+            num_questions=num_questions,
+            difficulty=difficulty,
+            exam_style=exam_style
+        )
+
+        # Bulk create questions for better performance
+        question_objects = []
+        for q_data in parsed_questions:
+            question_objects.append(Question(
+                quiz=quiz,
+                text=q_data['text'],
+                question_type=q_data.get('question_type', 'multiple_choice'),
+                option_a=q_data['options']['a'],
+                option_b=q_data['options']['b'],
+                option_c=q_data['options']['c'],
+                option_d=q_data['options']['d'],
+                correct_option=q_data['correct_option'],
+                topic=q_data['topic']
+            ))
+
+        # Bulk insert
+        Question.objects.bulk_create(question_objects)
+
+        # Cache result
+        cache_key = f"quiz_result_{quiz.id}"
+        cache_data = json.dumps([quiz.id, response.content, token_usage.id])
+        cache.set(cache_key, cache_data, timeout=86400)
+
+        return {
+            'quiz': quiz,
+            'content': response.content,
+            'token_usage': token_usage
+        }
+
+    except Exception as e:
+        print(f"Error in quiz generation: {e}")
+        raise
+
+
+def generate_quiz_from_exam_style(exam_style, num_questions, difficulty, task_id=None, include_long_answer=False):
+    """
+    Generate a quiz based on a famous exam, test, or book style without requiring a PDF.
+
+    Args:
+        exam_style: Style of a famous exam, test, or book to mimic
+        num_questions: Number of questions to generate
+        difficulty: Difficulty level of the questions
+        task_id: Optional task ID for progress tracking
+        include_long_answer: Whether to include long-answer questions
+    """
+    def update_progress_fast(step, message):
+        if task_id:
+            try:
+                from .tasks import update_progress
+                update_progress(task_id, step, 3, message)
+            except:
+                pass
+
+    try:
+        # Step 1: Prepare for generation
+        update_progress_fast(1, "Preparing to generate questions...")
+
+        # Step 2: Generate quiz with AI
+        update_progress_fast(2, "Generating quiz with AI...")
+
+        # Use faster LLM settings
+        llm = ChatOpenAI(
+            temperature=0.3,  # Lower temperature for faster, more focused responses
+            max_tokens=1500,  # Limit response length
+            model_name="gpt-3.5-turbo"  # Use faster model
+        )
+
+        # Enhanced prompt for exam style
+        prompt_template = """
+Generate {num_questions} {difficulty} questions that match the exact style and form of {exam_style} questions.
+These questions should be designed to be harder than typical {exam_style} questions,
+testing a deep understanding of the subject matter and specifically targeting common areas of confusion or misconception.
+The questions should be realistic and representative of the actual {exam_style} format, difficulty, and content areas.
+
+For each question, provide:
+1. The question text.
+2. Four multiple-choice options (a, b, c, d).
+3. Indicate the correct option.
+4. A 'Topic:' for the question.
+5. A 'Detailed Explanation:' that thoroughly explains why the correct answer is correct and why the incorrect answers are incorrect. This explanation should also address common misconceptions related to the question.
+6. A 'Marks:' section indicating the marks for the question (e.g., 'Marks: 2').
+
+Example format for a multiple-choice question:
+1. Question Text
+a) Option A
+b) Option B (correct)
+c) Option C
+d) Option D
+Topic: Relevant Topic
+Detailed Explanation: Thorough explanation of correct and incorrect options, addressing misconceptions.
+Marks: Number
+"""
+
+        if include_long_answer:
+            long_answer_count = max(1, num_questions // 3)
+            multiple_choice_count = num_questions - long_answer_count
+
+            prompt_template += """
+Format the first {multiple_choice_count} questions as multiple-choice:
+1. Question
+a) Option
+b) Option
+c) Option (correct)
+d) Option
+
+Format the remaining {long_answer_count} questions as long-answer questions that require detailed responses:
+{multiple_choice_count + 1}. Question that requires a detailed explanation
+Topic: Topic
+
+Be concise and test key concepts. For long-answer questions, focus on topics that require detailed explanations, analysis, or evaluation.
+"""
+        else:
+            prompt_template += """
+Format each question as:
+1. Question
+a) Option
+b) Option
+c) Option (correct)
+d) Option
+
+Be concise and test key concepts.
+"""
+
+        prompt = ChatPromptTemplate.from_template(prompt_template)
+
+        # Generate quiz
+        with get_openai_callback() as cb:
+            response = llm(prompt.format_messages(
+                num_questions=num_questions,
+                difficulty=difficulty,
+                exam_style=exam_style
+            ))
+
+            # Save token usage
+            token_usage = TokenObjects.objects.create(
+                prompt_tokens=cb.prompt_tokens,
+                completion_tokens=cb.completion_tokens,
+                total_tokens=cb.total_tokens
+            )
+
+        # Step 3: Parse and save quiz
+        update_progress_fast(3, "Finalizing quiz...")
+        parsed_questions = parse_quiz_content_fast(response.content)
+
+        # Create quiz object without PDF
+        quiz = Quiz.objects.create(
+            pdf=None,
+            num_questions=num_questions,
+            difficulty=difficulty,
+            exam_style=exam_style
+        )
+
+        # Bulk create questions for better performance
+        question_objects = []
+        for q_data in parsed_questions:
+            question_objects.append(Question(
+                quiz=quiz,
+                text=q_data['text'],
+                question_type=q_data.get('question_type', 'multiple_choice'),
+                option_a=q_data['options']['a'],
+                option_b=q_data['options']['b'],
+                option_c=q_data['options']['c'],
+                option_d=q_data['options']['d'],
+                correct_option=q_data['correct_option'],
+                topic=q_data['topic'],
+                explanation=q_data.get('explanation'),
+                marks=q_data.get('marks')
+            ))
+
+        # Bulk insert
+        Question.objects.bulk_create(question_objects)
+
+        # Cache result
+        cache_key = f"quiz_result_{quiz.id}"
+        cache_data = json.dumps([quiz.id, response.content, token_usage.id])
+        cache.set(cache_key, cache_data, timeout=86400)
+
+        return {
+            'quiz': quiz,
+            'content': response.content,
+            'token_usage': token_usage
+        }
+
+    except Exception as e:
+        print(f"Error in quiz generation: {e}")
+        raise
+
+def generate_quiz_from_pdf(pdf_obj, num_questions, difficulty, task_id=None, include_long_answer=False, exam_style=None):
+    """
+    Ultra-fast quiz generation with optimized processing pipeline.
+
+    Args:
+        pdf_obj: The UploadedPDF object
+        num_questions: Number of questions to generate
+        difficulty: Difficulty level of the questions
+        task_id: Optional task ID for progress tracking
+        include_long_answer: Whether to include long-answer questions
+        exam_style: Optional style of a famous exam, test, or book to mimic
+    """
+
+    def update_progress_fast(step, message):
+        if task_id:
+            try:
+                from .tasks import update_progress
+                update_progress(task_id, step, 5, message)
+            except:
+                pass
+
+    try:
+        # Step 1: Extract text (with caching)
+        update_progress_fast(1, "Extracting text from PDF...")
+        full_text = extract_text_from_pdf_fast(pdf_obj.file, pdf_obj)
+
+        if not full_text.strip():
+            raise Exception("No text could be extracted from the PDF")
+
+        # Step 2: Smart chunking based on text size
+        update_progress_fast(2, "Processing text...")
+        text_length = len(full_text)
+
+        if text_length > 500000:  # Large PDF
+            chunk_size = 2000
+            overlap = 300
+            num_chunks_to_use = min(8, num_questions * 2)
+        else:  # Normal PDF
+            chunk_size = 1000
+            overlap = 200
+            num_chunks_to_use = min(5, num_questions)
+
+        # Fast chunking
+        chunks = chunk_text_fast(full_text, chunk_size, overlap)
+
+        # Step 3: Store chunks efficiently
+        update_progress_fast(3, "Storing chunks...")
+        chunks_dir = store_text_chunks_fast(chunks, pdf_obj.id, task_id)
+
+        # Step 4: Find relevant content
+        update_progress_fast(4, "Finding relevant content...")
+        query = f"Generate {num_questions} {difficulty} questions main topics concepts"
+        relevant_chunks = retrieve_relevant_chunks_fast(query, pdf_obj.id, num_chunks_to_use)
+
+        # Prepare content for AI
+        content_parts = [chunk for chunk, score in relevant_chunks if score > 0]
+        if not content_parts:
+            content_parts = [chunk for chunk, score in relevant_chunks[:3]]
+
+        # Limit content size for faster processing
+        optimized_content = "\n\n".join(content_parts)
+        if len(optimized_content) > 4000:
+            optimized_content = optimized_content[:4000]
+
+        # Step 5: Generate quiz with AI
+        update_progress_fast(5, "Generating quiz with AI...")
+
+        # Use faster LLM settings
+        llm = ChatOpenAI(
+            temperature=0.3,  # Lower temperature for faster, more focused responses
+            max_tokens=1500,  # Limit response length
+            model_name="gpt-3.5-turbo"  # Use faster model
+        )
+
+        # Streamlined prompt
+        prompt_template = """
+Generate {n} {difficulty} questions from this content:
+
+{content}
+
+"""
+
+        # Add exam style instruction if provided
+        if exam_style:
+            prompt_template = """
+Generate {n} {difficulty} questions from this content that match the exact style and form of """ + exam_style + """ questions:
+
+{content}
+
+"""
+
+        if include_long_answer:
+            # Determine how many long-answer questions to include (about 1/3 of total, at least 1)
+            long_answer_count = max(1, num_questions // 3)
+            multiple_choice_count = num_questions - long_answer_count
+
+            prompt_template += f"""
+Format the first {multiple_choice_count} questions as multiple-choice:
+1. [Question]
+a) [Option]
+b) [Option]
+c) [Option] (correct)
+d) [Option]
+
+Format the remaining {long_answer_count} questions as long-answer questions that require detailed responses:
+{multiple_choice_count + 1}. [Question that requires a detailed explanation]
+Topic: [Topic]
+
+Be concise and test key concepts. For long-answer questions, focus on topics that require detailed explanations, analysis, or evaluation.
+"""
+        else:
+            prompt_template += """
+Format each question as:
+1. [Question]
+a) [Option]
+b) [Option]
+c) [Option] (correct)
+d) [Option]
+
+Be concise and test key concepts.
+"""
+
+        prompt = ChatPromptTemplate.from_template(prompt_template)
+
+        # Generate quiz
+        with get_openai_callback() as cb:
+            response = llm(prompt.format_messages(
+                content=optimized_content,
+                n=num_questions,
+                difficulty=difficulty
+            ))
+
+            # Save token usage
+            token_usage = TokenUsage.objects.create(
+                prompt_tokens=cb.prompt_tokens,
+                completion_tokens=cb.completion_tokens,
+                total_tokens=cb.total_tokens
+            )
+
+        # Parse and save quiz
+        parsed_questions = parse_quiz_content_fast(response.content)
+
+        # Create quiz object
+        quiz = Quiz.objects.create(
+            pdf=pdf_obj,
+            num_questions=num_questions,
+            difficulty=difficulty,
+            exam_style=exam_style
+        )
+
+        # Bulk create questions for better performance
+        question_objects = []
+        for q_data in parsed_questions:
+            question_objects.append(Question(
+                quiz=quiz,
+                text=q_data['text'],
+                question_type=q_data.get('question_type', 'multiple_choice'),
                 option_a=q_data['options']['a'],
                 option_b=q_data['options']['b'],
                 option_c=q_data['options']['c'],

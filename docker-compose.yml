@@ -13,6 +13,7 @@ services:
     depends_on:
       - db
       - redis
+      - chroma
     env_file:
       - .env
     environment:
@@ -34,6 +35,7 @@ services:
     depends_on:
       - redis
       - db
+      - chroma
     env_file:
       - .env
     environment:
@@ -61,7 +63,18 @@ services:
     volumes:
       - redis_data:/data
 
+  chroma:
+    image: ghcr.io/chroma-core/chroma:latest
+    volumes:
+      - chroma_data:/chroma/chroma
+    ports:
+      - "8001:8000"
+    environment:
+      - ALLOW_RESET=true
+      - ANONYMIZED_TELEMETRY=false
+
 
 volumes:
   postgres_data:
   redis_data:
+  chroma_data:
